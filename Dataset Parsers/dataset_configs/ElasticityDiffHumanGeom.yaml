@@ -1,0 +1,21 @@
+dataset_name: '0401'
+dataset_root_dir: /home/csuser/Documents/new_dataset/
+dataset_save_dir: /home/csuser/Documents/new_dataset/
+traj_dir_prefix: sim_seq_data_1
+train_geoms:
+- 1_p2d
+eval_geoms:
+- 2_p2d
+start_time_step: 5
+stop_time_step: 200
+jump_time_step: 5
+window: 6
+num_augmented_train_trajs: 50
+num_augmented_eval_trajs: 1
+max_rollout_trajectories: 8
+test_train_split: 0.8
+randomize: true
+rand_percent_lower: 0.02
+rand_percent_higher: 0.05
+save_hires: true
+

@@ -1,0 +1,17 @@
+batch_size: 2
+ckpt_name: egat_nclaw_Plasticine
+dataset: nclaw_Plasticine
+dataset_rootdir: /home/csuser/Documents/new_dataset/
+epoch: 2000
+eval_interval: 1500
+load_checkpoint: true
+lr: 0.0003
+gamma: 0.1**(1/5e6)
+model: egat
+noise: 0.00003
+sampling: false
+rollout_interval: 1500
+save_interval: 1000
+store_loss: true
+visualize_graph: false
+model_config: egat.yaml

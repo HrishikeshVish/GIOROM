@@ -1,0 +1,21 @@
+dataset_name: Plasticine
+dataset_root_dir: /media/hviswan/Data1/NCLAW Dataset/
+dataset_save_dir: /home/hviswan/Documents/new_dataset/
+start_time_step: 5
+stop_time_step: 1500
+jump_time_step: 5
+window: 6
+start_traj_index: 1
+num_train_trajs: 13
+num_augmented_train_trajs: 10
+num_augmented_eval_trajs: 1
+max_rollout_trajectories: 8
+test_train_split: 0.8
+randomize: true
+rand_percent_lower: 0.20
+rand_percent_higher: 0.25
+save_hires: true
+save_midres: true
+save_diff_discs: true
+
+

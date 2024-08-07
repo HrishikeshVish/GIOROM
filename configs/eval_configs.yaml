@@ -1,0 +1,10 @@
+batch_size: 4
+ckpt_name: GIOROM_Plasticine
+dataset: nclaw_geometries
+dataset_rootdir: /home/csuser/Documents/new_dataset/
+dataset_idx: 1
+model: giorom3d
+noise: 0.0003
+visualize_graph: true
+model_config: giorom3d.yaml
+save_rollout: false

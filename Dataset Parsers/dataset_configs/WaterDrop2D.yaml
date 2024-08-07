@@ -1,0 +1,13 @@
+dataset_name: WaterDrop2D
+dataset_root_dir: /media/csuser/DATA/GNS_data/
+save_root_dir: /home/csuser/Documents/new_dataset/
+randomize: false
+use_random_seed: false
+random_seed: 42
+rand_percent_lower: 0.06
+rand_percent_higher: 0.1
+num_test_trajectories: 5
+num_train_trajectories: 100
+max_rollout_trajectories: 5
+set_size_limit: false
+max_particle_size: 1000

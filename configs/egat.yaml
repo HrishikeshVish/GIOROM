@@ -1,0 +1,7 @@
+hidden_size: 128
+n_mp_layers: 2                                        
+num_particle_types: 9
+particle_type_dim: 16                                                     
+dim: 3                                                                   
+window_size: 5                                                            
+heads : 3
