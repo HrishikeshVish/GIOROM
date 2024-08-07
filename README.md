@@ -1,2 +1,2 @@
-# GIOROM
-The code will be uploaded shortly
+# Reduced-Order Neural Operators: Learning Lagrangian Dynamics on Highly Sparse Graphs
+## 
