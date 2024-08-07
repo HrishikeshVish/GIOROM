@@ -12,12 +12,12 @@
 ![Neural Operator](https://img.shields.io/badge/Neural%20Operator-0.3.0-brown?style=for-the-badge&logo=nvidia)
 ![Blender](https://img.shields.io/badge/Blender-4.0.0-orange?style=for-the-badge&logo=blender)
 
-> @article{viswanath2024reduced,
-  title={Reduced-Order Neural Operators: Learning Lagrangian Dynamics on Highly Sparse Graphs},
-  author={Viswanath, Hrishikesh and Chang, Yue and Berner, Julius and Chen, Peter Yichen and Bera, Aniket},
-  journal={arXiv preprint arXiv:2407.03925},
-  year={2024}
-}
+  @article{viswanath2024reduced,
+    title={Reduced-Order Neural Operators: Learning Lagrangian Dynamics on Highly Sparse Graphs},
+    author={Viswanath, Hrishikesh and Chang, Yue and Berner, Julius and Chen, Peter Yichen and Bera, Aniket},
+    journal={arXiv preprint arXiv:2407.03925},
+    year={2024}
+  }
 
 
 
