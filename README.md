@@ -5,7 +5,7 @@
 
 ![GIOROM Pipeline\label{pipeline}](Res/giorom_pipeline_plasticine.png)
 
-![Python](https://img.shields.io/badge/Python-3.6,%203.7,%203.8,%203.9.%203.10-red?style=for-the-badge&logo=python)
+![Python](https://img.shields.io/badge/Python-3.8,%203.9.%203.10-red?style=for-the-badge&logo=python)
 ![Huggingface](https://img.shields.io/badge/Transformers-4.21.0-blue?style=for-the-badge&logo=openai)
 ![Pytorch](https://img.shields.io/badge/Pytorch-1.12.0-yellow?style=for-the-badge&logo=pytorch)
 ![Cuda](https://img.shields.io/badge/Cuda-11.6-green?style=for-the-badge&logo=nvidia)
