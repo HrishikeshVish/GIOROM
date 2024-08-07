@@ -31,11 +31,11 @@ Neural Operator Inference            |  Discretization Agnostic Neural Field  | 
 
 # Instructions to Use the Code
 
-After downloading the repo, and from the parent directory. Install dependencies:
+#### After downloading the repo, and from the parent directory. Install dependencies:
 
     conda create --name <env> --file requirements.txt
 
-Download the dataset and Create a folder:
+#### Download the dataset and Create a folder:
 
     mkdir giorom_datasets
     mkdir <datasetname>
@@ -45,21 +45,21 @@ We provide code to process datasets provided by GNS [1] and NCLAW [2]
 - [1] Sanchez-Gonzales+ Learning to Simulate Complex Physics with Graph Neural Networks
 - [2] Ma+ Learning neural constitutive laws from motion observations for generalizable pde dynamics
 
-Dataset preprocessing:
+#### Dataset preprocessing:
 
     cd Dataset\ Parsers/
     python parseData.py --data_config nclaw_Sand
     python parseData.py --data_config WaterDrop2D
 
-Train a model from the config:
+#### Train a model from the config:
 
     python train.py --train_config train_configs_nclaw_Water
 
-Train a model with args:
+#### Train a model with args:
 
     python train.py --batch_size 2 --epoch 100 --lr 0.0001 --noise 0.0003 --eval_interval 1500 --rollout_interval 1500 --sampling true --sampling_strategy fps --graph_type radius --connectivity_radius 0.032 --model giorom2d_large --dataset WaterDrop2D --load_checkpoint true --ckpt_name giorom2d_large_WaterDrop2D --dataset_rootdir giorom_datasets/
 
-Evaluate a model (Untested code):
+#### Evaluate a model (Untested code):
 
     python eval.py --eval_config train_configs_Water2D
 
