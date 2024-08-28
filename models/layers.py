@@ -1,8 +1,8 @@
 import torch
 import math
 import torch_geometric.utils as pyg_utils
+from torch_geometric.nn.conv import WLConvContinuous, ChebConv, SSGConv
 import torch_geometric as pyg
-import torch.nn.functional as F
 import torch_scatter
 from torch import nn
 
@@ -43,12 +43,18 @@ class SchInteractionNetwork(pyg.nn.MessagePassing): # SchInteractionNetwork clas
         super().__init__()
         self.lin_edge = MLP(hidden_size * 3, hidden_size, hidden_size, layers)
         self.lin_node = MLP(hidden_size * 2, hidden_size, hidden_size, layers)
+        self.spectralConv = SSGConv(in_channels=hidden_size, out_channels=hidden_size, alpha=0.7)
 
     def forward(self, x, edge_index, edge_feature, node_dist):
+        laplacian = pyg_utils.get_laplacian(edge_index)
+        #edge_index = laplacian[0]
+        node = self.spectralConv(x=x, edge_index=laplacian[0], edge_weight=laplacian[1])
         edge_out, aggr = self.propagate(edge_index, x=(x, x), edge_feature=edge_feature, node_dist=node_dist)
+        reduction = torch.mean(aggr, dim=0)
+
         node_out = self.lin_node(torch.cat((x, aggr), dim=-1))
         edge_out = edge_feature + edge_out
-        node_out = x + node_out
+        node_out = x + node_out + node
         return node_out, edge_out
 
     def message(self, x_i, x_j, edge_feature, node_dist):
@@ -57,7 +63,8 @@ class SchInteractionNetwork(pyg.nn.MessagePassing): # SchInteractionNetwork clas
         return x
 
     def aggregate(self, inputs, index, node_dist, dim_size=None):
-        out = torch_scatter.scatter(torch.div(inputs, 1+node_dist), index, dim=self.node_dim, dim_size=dim_size, reduce="mean")
+        out = torch_scatter.scatter(torch.mul(inputs, node_dist), index, dim=self.node_dim, dim_size=dim_size, reduce="mean")
+
         return (inputs, out)
 
 class GatNetwork(pyg.nn.MessagePassing): # GAT Class
