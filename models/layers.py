@@ -63,7 +63,7 @@ class SchInteractionNetwork(pyg.nn.MessagePassing): # SchInteractionNetwork clas
         return x
 
     def aggregate(self, inputs, index, node_dist, dim_size=None):
-        out = torch_scatter.scatter(torch.mul(inputs, node_dist), index, dim=self.node_dim, dim_size=dim_size, reduce="mean")
+        out = torch_scatter.scatter(torch.div(inputs, 1+node_dist), index, dim=self.node_dim, dim_size=dim_size, reduce="mean")
 
         return (inputs, out)
 

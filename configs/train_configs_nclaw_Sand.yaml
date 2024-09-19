@@ -12,6 +12,7 @@ noise: 0.0003
 sampling: false
 sampling_strategy: random
 graph_type: radius
+connectivity_radius: 0.07499999672174454
 rollout_interval: 1500
 save_interval: 1000
 store_loss: true

@@ -1,5 +1,5 @@
 batch_size: 4
-ckpt_name: giorom2d_WaterDropSmall_sampled
+ckpt_name: gnot2d_WaterDropSmall
 dataset: WaterDropSmall
 dataset_rootdir: /home/csuser/Documents/new_dataset/
 epoch: 2000
@@ -7,13 +7,14 @@ eval_interval: 1500
 load_checkpoint: true
 lr: 0.0001
 gamma: 0.1**(1/5e6)
-model: giorom2d
-noise: 0.0003
-sampling: true
+model: gnot2d
+noise: 0
+sampling: false
 sampling_strategy: random
 graph_type: radius
 rollout_interval: 1500
+connectivity_radius: 0.032
 save_interval: 1000
 store_loss: true
 visualize_graph: true
-model_config: giorom2d.yaml
+model_config: gnot2d.yaml

@@ -54,7 +54,7 @@ def preprocess(particle_type, position_seq, target_position, metadata, noise_std
         edges = delaunay2edges(triangulation)
         edge_index = torch.from_numpy(edges.astype(np.int64)).permute(1,0)
 
-    else:
+    elif(graph_type == 'radius'):
         if radius is not None:
             edge_index = pyg.nn.radius_graph(recent_position, radius, loop=True, max_num_neighbors=n_particle)
         else:
@@ -100,6 +100,7 @@ def preprocess(particle_type, position_seq, target_position, metadata, noise_std
         y=acceleration,
         pos=torch.cat((velocity_seq.reshape(velocity_seq.size(0), -1), distance_to_boundary), dim=-1),
         recent_pos = recent_position,
+        target_pos = target_position,
         position_seq = old_position_seq
     )
     return graph

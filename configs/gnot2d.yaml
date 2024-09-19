@@ -1,0 +1,16 @@
+trunk_size: 128
+branch_sizes : 
+- 2
+space_dim: 2
+output_size: 2
+n_layers: 2
+n_hidden: 256
+n_head: 1
+n_experts: 2
+n_inner: 4
+mlp_layers: 4
+attn_type: 'linear'
+act: 'gelu'
+ffn_dropout: 0.0
+attn_dropout: 0.0
+horiz_fourier_dim: 0

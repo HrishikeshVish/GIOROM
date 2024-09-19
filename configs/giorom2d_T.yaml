@@ -1,0 +1,45 @@
+hidden_size: 128
+n_mp_layers: 2                                                           # number of GNN layers
+num_particle_types: 9
+particle_type_dim: 16                                                     # embedding dimension of particle types
+dim: 2                                                                    # dimension of the world typical 2D or 3D
+window_size: 5                                                            # the model looks into W frames before the frame to be predicted
+#window_size:2
+heads : 3                                                                 # number of attention heads in GAT and EGAT
+
+n_modes : !!python/tuple
+- 24
+- 24                                                            #FNO Hyperparams
+fno_in_channels: 32
+fno_hidden_channels: 32
+fno_lifting_channels: 32
+fno_projection_channels: 32
+fno_layers: 2
+fno_use_mlp : true
+fno_stabilizers: 'tanh'
+fno_preactivation : true
+
+use_open3d : false                                                       #GNO Hyperparams
+in_gno_mlp_hidden_layers :
+- 32
+- 64
+in_gno_transform_type : 'nonlinear_kernelonly'
+out_gno_in_dim : 2
+out_gno_hidden: 128
+out_gno_mlp_hidden_layers : 
+- 32
+- 64
+
+gno_radius: 0.024
+out_gno_transform_type: 'linear'
+
+projection_channels: 256
+projection_layers: 1
+projection_n_dim : 1
+
+latent_grid_dim : 32
+latent_domain_lims : 
+- - 0.0
+  - 1.0
+- - 0.0
+  - 1.0

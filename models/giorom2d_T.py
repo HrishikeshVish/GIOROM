@@ -66,9 +66,11 @@ class PhysicsEngine(torch.nn.Module):
         projection_n_dim = 1,
         projection_non_linearity = F.gelu,
 
-        latent_grid_dim = 32
+        latent_grid_dim = 32,
+        latent_domain_lims = [[0.0, 1.0], [0.0, 1.0]]
     ):
         super().__init__()
+        self.device = device
         self.window_size = window_size
         self.embed_type = torch.nn.Embedding(num_particle_types, particle_type_dim)
         self.node_in = MLP(particle_type_dim + dim * (window_size + 2), hidden_size, hidden_size, 3)

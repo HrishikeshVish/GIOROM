@@ -81,7 +81,6 @@ def rolloutMSE(simulator, dataset, noise, radius=None, graph_type='radius'):
     simulator.eval()
     with torch.no_grad():
         for rollout_data in dataset:
-            
             rollout_out = rollout(simulator, rollout_data, dataset.metadata, noise, radius, graph_type)
             rollout_out = rollout_out.permute(1, 0, 2)
             loss = (rollout_out - rollout_data["position"]) ** 2

@@ -25,6 +25,7 @@ parser.add_argument("-ri", "--rollout_interval", help='Rollout Interval', defaul
 parser.add_argument("-rs", "--sampling", help='Sampling', default=False, action='store_true')
 parser.add_argument("-ss", "--sampling_strategy", help='Sampling', default='random', choices=['random', 'fps'])
 parser.add_argument("-gt", "--graph_type", help='Graph Type', default='radius', choices=['radius', 'delaunay'])
+parser.add_argument("-ct", "--connectivity_radius", help='Graph Connectivity Radius', default=0.015, type=float)
 parser.add_argument("-m", "--model", help='Model', choices=['giorom2d','giorom2d_medium', 'giorom2d_large', 'giorom3d', 'giorom3d_large', 'egat'])
 parser.add_argument("-d", "--dataset", help='Dataset')
 parser.add_argument("-lc", "--load_checkpoint", help='Load Checkpoint', default=False, action='store_true')
@@ -77,6 +78,12 @@ elif(params.model == 'giorom3d_large_030'):
     from models.giorom3d_large_030 import PhysicsEngine
 elif(params.model == 'egat'):
     from Baselines.egat import PhysicsEngine
+elif(params.model == 'gnot2d'):
+    from Baselines.mmgpt import PhysicsEngine
+elif(params.model == 'giorom3d_T'):
+    from models.giorom3d_T import PhysicsEngine
+elif(params.model == 'giorom2d_T'):
+    from models.giorom2d_T import PhysicsEngine
 else:
     raise Exception("Invalid model name")
 
@@ -133,7 +140,12 @@ def train(params, optimizer, scheduler, ckpt, simulator, train_loader, dataset_s
             optimizer.zero_grad()
             data = data.cuda()
             pred = simulator(data)
-            loss = loss_fn(pred, data.y)
+            acceleration = pred * torch.sqrt(torch.tensor(valid_dataset_metadata["acc_std"]).cuda() ** 2 + params.noise ** 2) + torch.tensor(valid_dataset_metadata["acc_mean"]).cuda()
+            recent_position = data.position_seq[:, -1]
+            recent_velocity = recent_position - data.position_seq[:, -2]
+            new_velocity = recent_velocity + acceleration
+            new_position = recent_position + new_velocity
+            loss = loss_fn(pred, data.y) + 1e5*loss_fn(new_position, data.target_pos)
             loss.backward()
             optimizer.step()
             scheduler.step()
@@ -262,14 +274,14 @@ if __name__ == '__main__':
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    train_dataset = OneStepDataset(dataset_dir, "train.pt", noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=0.060)
-    valid_dataset = OneStepDataset(dataset_dir, "test.pt", noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=0.060)
-    rollout_dataset = RolloutDataset(dataset_dir, "rollout.pt", sampling_strategy=params.sampling, graph_type=params.graph_type,radius=0.060, mesh_size=170)[:2]
+    train_dataset = OneStepDataset(dataset_dir, "train.obj", noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius)
+    valid_dataset = OneStepDataset(dataset_dir, "test.pt", noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius)
+    rollout_dataset = RolloutDataset(dataset_dir, "rollout.pt", sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius, mesh_size=170)[:2]
     train_loader = pyg.loader.DataLoader(train_dataset, batch_size=params.batch_size, shuffle=True)
     valid_loader = pyg.loader.DataLoader(valid_dataset, batch_size=params.batch_size, shuffle=False)
 
     if(params.visualize_graph):
-        sample_dataset = OneStepDataset(dataset_dir, "train.pt", noise_std=params.noise, return_pos=True, sampling=params.sampling, sampling_strategy='random', graph_type=params.graph_type, radius=0.060)
+        sample_dataset = OneStepDataset(dataset_dir, "train.pt", noise_std=params.noise, return_pos=True, sampling=params.sampling, sampling_strategy='random', graph_type=params.graph_type, radius=params.connectivity_radius)
         visualize_graph(sample_dataset)
 
     if(params.model_config is not None):
@@ -277,7 +289,7 @@ if __name__ == '__main__':
     else:
         simulator = PhysicsEngine(device)
     
-    optimizer = torch.optim.Adam(simulator.parameters(), lr=params.lr)
+    optimizer = torch.optim.Adamax(simulator.parameters(), lr=params.lr, weight_decay=1e-6)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=eval(params.gamma))
     
     total_params = sum(p.numel() for p in simulator.parameters())
@@ -314,8 +326,8 @@ if __name__ == '__main__':
         optimizer.load_state_dict(ckpt['optimizer'])
         scheduler.load_state_dict(ckpt['scheduler'])
         
-        #ckpt = {}
-        #ckpt['epoch'] = 0
+        # ckpt = {}
+        # ckpt['epoch'] = 0
         
     else:
         ckpt = {}
@@ -327,4 +339,4 @@ if __name__ == '__main__':
 
     simulator = simulator.to(simulator.device)
     train_loss_list = train(params, optimizer, scheduler, ckpt['epoch'], simulator, train_loader, len(train_dataset), valid_loader, valid_rollout_dataset=rollout_dataset, 
-                            valid_dataset_metadata=rollout_dataset.metadata, plot_loss=True,save_weights=True, radius=0.060)
+                            valid_dataset_metadata=rollout_dataset.metadata, plot_loss=True,save_weights=True, radius=rollout_dataset.radius)

@@ -11,8 +11,8 @@ from torch.nn.utils.rnn import pad_sequence
 
 from Baselines.utils import MultipleTensors
 from Baselines.mlp import MLP
-from models.layers import SchInteractionNetwork
-from models.layers import MLP as schMLP
+from Baselines.layers import SchInteractionNetwork
+from Baselines.layers import MLP as schMLP
 
 
 
@@ -265,19 +265,20 @@ class PhysicsEngine(nn.Module):
                  branch_sizes=[2],
                  space_dim=2,
                  output_size=2,
-                 n_layers=1,
+                 n_layers=4,
                  n_hidden=256,
-                 n_head=2,
+                 n_head=4,
                  n_experts = 2,
-                 n_inner = 1,
-                 mlp_layers=1,
+                 n_inner = 4,
+                 mlp_layers=4,
                  attn_type='linear',
                  act = 'gelu',
-                 ffn_dropout=0.3,
-                 attn_dropout=0.3,
+                 ffn_dropout=0.0,
+                 attn_dropout=0.0,
                  horiz_fourier_dim = 0,
                  ):
         super(PhysicsEngine, self).__init__()
+        self.device = device
         self.window_size = 5
         self.horiz_fourier_dim = horiz_fourier_dim
         self.trunk_size = trunk_size * (4*horiz_fourier_dim + 3) if horiz_fourier_dim>0 else trunk_size
@@ -300,7 +301,7 @@ class PhysicsEngine(nn.Module):
 
         self.__name__ = 'MIOEGPT'
         hidden_size=128
-        n_mp_layers=2                                                           # number of GNN layers
+        n_mp_layers=1                                                           # number of GNN layers
         num_particle_types=9
         particle_type_dim=16                                                     # embedding dimension of particle types
         dim=2                                                                    # dimension of the world, typical 2D or 3D
@@ -310,7 +311,6 @@ class PhysicsEngine(nn.Module):
         self.embed_type = torch.nn.Embedding(num_particle_types, particle_type_dim)
         self.node_in = schMLP(particle_type_dim + dim * (window_size + 2), hidden_size, hidden_size, 3)
         self.edge_in = schMLP(dim + 1, hidden_size, hidden_size, 3)
-        self.node_latent_in = schMLP(dim, hidden_size, hidden_size, 3)
         self.node_out = schMLP(hidden_size, hidden_size, dim, 3, layernorm=False)
         self.project2d = torch.nn.Linear(3, 2)
         self.bound2d = torch.nn.Tanh()
@@ -319,13 +319,9 @@ class PhysicsEngine(nn.Module):
 
         self.n_mp_layers = n_mp_layers
 
-        self.layers = torch.nn.ModuleList([SchInteractionNetwork(
+        self.in_layers = torch.nn.ModuleList([SchInteractionNetwork(
               hidden_size, 3
           ) for _ in range(n_mp_layers)])
-        
-        self.out_layers = torch.nn.ModuleList([SchInteractionNetwork(
-              hidden_size, 3
-          ) for _ in range(1)])
 
     def _init_weights(self, module):
         if isinstance(module, (nn.Linear, nn.Embedding)):
@@ -345,26 +341,23 @@ class PhysicsEngine(nn.Module):
 
         #Data preprocessing modified for Lagrangian dynamics datasets
         node_feature = torch.cat((self.embed_type(data.x), data.pos), dim=-1)
-        nf = self.node_in(node_feature)
         node_feature = self.node_in(node_feature)
-        
         edge_feature = self.edge_in(data.edge_attr)
         
         
         # stack of GNN layers
         for i in range(self.n_mp_layers):
 
-            node_feature, edge_feature = self.layers[i](node_feature, data.edge_index, edge_feature=edge_feature, node_dist=data.node_dist) #Creation of latents, similar to what is used for other baseline models for fair comparison
+            node_feature, edge_feature = self.in_layers[i](node_feature, data.edge_index, edge_feature=edge_feature, node_dist=data.node_dist) #Creation of latents, similar to what is used for other baseline models for fair comparison
 
         # post-processing
         #out = self.node_out(node_feature)
 
 
-        x = node_feature.unsqueeze(0) 
+        x = node_feature.unsqueeze(0)
 
         inputs = data.recent_pos.unsqueeze(0)
 
-        #pos = x[:,:,0:self.space_dim]
         pos = x[:,:,0:self.space_dim]
 
 
@@ -383,9 +376,4 @@ class PhysicsEngine(nn.Module):
 
         #x_out = torch.cat([x[i, :num] for i, num in enumerate(g.batch_num_nodes())],dim=0)
         x_out = x.squeeze(0)
-        node_feature = self.node_latent_in(x_out) + node_feature
-        for i in range(1):
-
-            node_feature, edge_feature = self.out_layers[i](node_feature, data.edge_index, edge_feature=edge_feature, node_dist=data.node_dist) #Creation of latents, similar to what
-        x_out = self.node_out(node_feature )
         return x_out
