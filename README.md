@@ -1,7 +1,7 @@
 # Reduced-Order Neural Operators: Learning Lagrangian Dynamics on Highly Sparse Graphs, 2024
 ## [Hrishikesh Viswanath](https://hrishikeshvish.github.io), [Chang Yue](https://changy1506.github.io/), [Julius Berner](https://jberner.info/), [Peter Yichen Chen](https://peterchencyc.com/), [Aniket Bera](https://www.cs.purdue.edu/homes/ab/)
 
-#### [Arxiv](https://arxiv.org/pdf/2407.03925) | [Project Page](https://hrishikeshvish.github.io/assets/projects/giorom.html) | [Medium]() | [Saved Weights](https://drive.google.com/drive/folders/1CWMdqKaCtLy8KhA-DIBpS07M6CSuMjgQ?usp=sharing) | [Data](https://sites.google.com/view/learning-to-simulate)
+#### [Arxiv](https://arxiv.org/pdf/2407.03925) | [Project Page](https://hrishikeshvish.github.io/projects/giorom.html) | [Saved Weights](https://drive.google.com/drive/folders/1CWMdqKaCtLy8KhA-DIBpS07M6CSuMjgQ?usp=sharing) | [Data](https://sites.google.com/view/learning-to-simulate)
 
 ![GIOROM Pipeline\label{pipeline}](Res/giorom_pipeline_plasticine.png)
 
