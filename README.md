@@ -27,18 +27,12 @@ Neural Operator Inference            |  Discretization Agnostic Neural Field  | 
 ![](Res/neuraloperator.gif)  |  ![](Res/neuralfield.gif) | ![](Res/rendered.gif)
 
 <p align="center">
-  <figure style="display: inline-block; text-align: center; margin: 10px;">
   <img src="Res/neuraloperator.gif" width="25%" />
-  <figcaption> Neural Operator Inference </figcaption>
-  </figure>
-  <figure style="display: inline-block; text-align: center; margin: 10px;">
+  <em>Caption</em>
   <img src="Res/neuralfield.gif" width="25%" />
-  <figcaption>Discretization Agnostic FOM Inference </figcaption>
-  </figure>
-  <figure style="display: inline-block; text-align: center; margin: 10px;">
   <img src="Res/rendered.gif" width="36%" />
-  <figcaption>Final Rendering</figcaption>
 </p>
+<p></p>
 
 
 # Abstract
