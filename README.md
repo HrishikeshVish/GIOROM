@@ -21,11 +21,6 @@
 
 
 
-
-Neural Operator Inference            |  Discretization Agnostic Neural Field  | Final Rendered Sim
-:-------------------------:|:-------------------------:|:-------------------------:
-![](Res/neuraloperator.gif)  |  ![](Res/neuralfield.gif) | ![](Res/rendered.gif)
-
 <p align="center">
   <img src="Res/neuraloperator.gif" width="25%" />
 
