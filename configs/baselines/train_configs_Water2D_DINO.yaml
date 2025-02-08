@@ -7,7 +7,7 @@ eval_interval: 1500
 load_checkpoint: true
 lr: 0.0001
 gamma: 0.1**(1/5e6)
-model: giorom2d_T
+model: dino
 noise: 0
 sampling: false
 sampling_strategy: random
@@ -17,5 +17,5 @@ connectivity_radius: 0.032
 save_interval: 1000
 store_loss: true
 visualize_graph: true
-model_config: giorom2d_T.yaml
+model_config: dino.yaml
 save_weights: false

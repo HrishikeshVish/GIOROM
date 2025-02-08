@@ -1,5 +1,5 @@
-batch_size: 4
-ckpt_name: giorom3d_T_owl
+batch_size: 2
+ckpt_name: giorom3d_T_elasticity
 dataset: elasticity
 dataset_rootdir: /home/csuser/Documents/new_dataset/
 epoch: 2000
@@ -13,7 +13,7 @@ sampling: false
 sampling_strategy: random
 graph_type: radius
 rollout_interval: 1500
-connectivity_radius: 0.105
+connectivity_radius: 0.085
 save_interval: 1000
 store_loss: true
 visualize_graph: false

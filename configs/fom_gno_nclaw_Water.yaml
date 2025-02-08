@@ -1,0 +1,7 @@
+dim: 3
+use_open3d: false
+gno_mlp_hidden_layers:
+- 128
+- 256
+gno_transform_type: 'nonlinear_kernelonly'
+gno_radius: 0.024
