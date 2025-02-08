@@ -3,7 +3,7 @@
 
 #### [Arxiv](https://arxiv.org/pdf/2407.03925) | [Project Page](https://hrishikeshvish.github.io/projects/giorom.html) | [Saved Weights](https://drive.google.com/drive/folders/1CWMdqKaCtLy8KhA-DIBpS07M6CSuMjgQ?usp=sharing) | [Data](https://sites.google.com/view/learning-to-simulate)
 
-![GIOROM Pipeline\label{pipeline}](Res/giorom_pipeline_plasticine.png)
+![GIOROM Pipeline\label{pipeline}](Res/giorom.png)
 
 ![Python](https://img.shields.io/badge/Python-3.10-red?style=for-the-badge&logo=python)
 ![Pytorch](https://img.shields.io/badge/Pytorch-2.1.0-yellow?style=for-the-badge&logo=pytorch)
@@ -56,15 +56,15 @@ We provide code to process datasets provided by GNS [1] and NCLAW [2]
     python parseData.py --data_config nclaw_Sand
     python parseData.py --data_config WaterDrop2D
 
-#### Train a model from the config:
+#### Train a time-stepper model from the config:
 
     python train.py --train_config train_configs_nclaw_Water
 
-#### Train a model with args:
+#### Train a time-stepper model with args:
 
     python train.py --batch_size 2 --epoch 100 --lr 0.0001 --noise 0.0003 --eval_interval 1500 --rollout_interval 1500 --sampling true --sampling_strategy fps --graph_type radius --connectivity_radius 0.032 --model giorom2d_large --dataset WaterDrop2D --load_checkpoint true --ckpt_name giorom2d_large_WaterDrop2D --dataset_rootdir giorom_datasets/
 
-#### Evaluate a model (Untested code):
+#### Evaluate a time-stepper model (Untested code):
 
     python eval.py --eval_config train_configs_Water2D
 
@@ -75,10 +75,19 @@ To render the results with Polyscope or Blender Use the following. This part of 
     python createObj.py
     python blender_rendering.py
 
-### Neural Fields Inference: We follow the code and training strategy provided by [LiCROM](https://github.com/Changy1506/LiCROM_all) 
+### Full-Order inference 
+We have split the training of the time-stepper model and the full-order inference model. The two can be combined and trained end-to-end but the split setup requires less compute resources. To train the FOM model, the full-order ground truth sequences are provided to the dataloader. The loader creates Q-point-discretizations, which is provided to the model as input. The sampling strategies and ratios can be tuned in the config file
+
+    python train_fom.py --train_config train_configs_nclaw_Water_FOM.yaml
+
+We provide a demo script that creates an arbitrary Q-point discretization of the input sequence, which is passed to the model. However, in practice, the input to the model will be the output of the time-stepper model 
+
+    python infer_fom_demo.py --train_config train_configs_nclaw_Contact_FOM.yaml
+    
 
 # Datasets
-We support existing datasets provided by GNS and have new dataset curated from NCLAW framework. We shall upload the new dataset soon...
+We support existing datasets provided by GNS and have new dataset curated from NCLAW framework.
+The NCLAW Datasets can be generated using the simulator [NCLAW](https://github.com/PingchuanMa/NCLaw). Our model supports all the materials used in NCLAW. 
 
 ### Currently tested datasets from Learning to Simulate Complex Physics with Graph Neural Networks (GNS)
 
@@ -116,8 +125,11 @@ Where:
 ![Discretization Invariance](Res/disc_invar.png)
 ![Generalizability](Res/3d_sims.png)
 
-# How GIOROM is different from GNS and GINO (Neural Operator for 3D PDEs)
-![Diff Archs](Res/diff_archs.png)
+# Comparison Against Reduced-Order-Modelling Approaches
+![Diff Archs](Res/ROM_Comps.png)
 
 # Different Graph Construction methods and Sampling Strategies supported in the codebase
 ![Graphs](Res/graph_techniques.png)
+
+# Long Simulation Examples
+![Long Rollouts](Res/Full_Trajs-min.png)
