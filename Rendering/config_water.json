@@ -1,0 +1,19 @@
+{
+		"object": {
+                "location": {"x": 0.3138, "y": -1.4472, "z": -0.009492},
+                "rotation": {"x": 90, "y": 0, "z": 81.965},
+                "scale": {"x": 1.211, "y": 1.211, "z": 1.211}
+        },
+		"box": {
+                "location": {"x": -0.077017, "y": -1.8527, "z": 0.064605},
+                "rotation": {"x": 90, "y": 0, "z": 82.659},
+                "scale": {"x": 0.979, "y": 1.059, "z": 0.979}
+        },
+        "camera": {
+                "location": {"x": 0.95568, "y": -3.3198 , "z": 1.358 },
+                "rotation": {"x": 71.17, "y": -0.075725, "z": -3.3931}
+        },
+		"pointsToVolumeDensity": 4.0,
+		"pointsToVolumeVoxelAmount": 170,
+		"pointsToVolumeRadius": 0.013
+}
