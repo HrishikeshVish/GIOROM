@@ -33,7 +33,7 @@ Neural Operator Inference            |  Discretization Agnostic Neural Field  | 
   <img src="Res/rendered.gif" width="36%" /> <br>
   
 </p>
-<p><em>&emsp;&emsp;&emsp;&emsp;Neural Operator Inference &emsp;&emsp;&emsp;&emsp; Discretization Agnostic FOM Inference &emsp;&emsp;&emsp;&emsp; Final Rendering</em></p>
+<p><em>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Neural Operator Inference &emsp;&emsp;&emsp;&emsp; Discretization Agnostic FOM Inference &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Final Rendering</em></p>
 
 
 # Abstract
