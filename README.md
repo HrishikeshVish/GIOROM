@@ -27,8 +27,8 @@ Neural Operator Inference            |  Discretization Agnostic Neural Field  | 
 ![](Res/neuraloperator.gif)  |  ![](Res/neuralfield.gif) | ![](Res/rendered.gif)
 
 <p align="center">
-  <img src="Res/neuraloperator.gif" width="15%" />
-  <img src="Res/neuralfield.gif" width="15%" />
+  <img src="Res/neuraloperator.gif" width="25%" />
+  <img src="Res/neuralfield.gif" width="25%" />
   <img src="Res/rendered.gif" width="36%" />
 </p>
 
