@@ -75,7 +75,7 @@ Each material has a hard-coded geometry. This can be found in ```configs/env/blo
         blob_cfg.vel['seed'] = seed # Add this line
         
 
-The config files are formatted in a slightly different way, but this can be changed depending on how the dataset is generated
+The config files are formatted in a slightly different way, but this can be changed depending on how the dataset is generated. In the below structure, shape_1 and shape_2 refer to two different "runs", generated with different random velocity seeds, 
 
     water
         - shape_1
