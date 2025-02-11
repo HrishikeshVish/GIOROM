@@ -92,6 +92,8 @@ The config files are formatted in a slightly different way, but this can be chan
 
     
 
+All the config paths provided are for reference and need to be updated before they can be used. 
+
 #### Train a time-stepper model from the config:
 
     python train.py --train_config train_configs_nclaw_Water
