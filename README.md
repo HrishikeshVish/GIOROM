@@ -171,3 +171,7 @@ Where:
 
 # Long Simulation Examples
 ![Long Rollouts](Res/Full_Trajs-min.png)
+
+
+# Memory and Computation Improvements through sparse graph ROM learning
+![Losses](Res/sparsity_loss.png)
