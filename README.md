@@ -45,6 +45,14 @@
     mkdir giorom_datasets
     mkdir <datasetname>
 
+For each dataset, there should be 4 files within the dataset directory. In some cases there's a fifth file rollout_full, which is the full pointcloud (not sampled). Typically, rollout.pt contains sampled points for space efficiency. For small datasets such as WaterDrop2D, the full point cloud has ~2000 points and does not contain a rollout_full.pt. For example, nclaw_Water would look something like this
+
+    giorom_datasets/nclaw_Water/metadata.json
+    giorom_datasets/nclaw_Water/rollout_full.pt
+    giorom_datasets/nclaw_Water/test.pt
+    giorom_datasets/nclaw_Water/train.obj
+    giorom_datasets/nclaw_Water/rollout.pt
+
 We provide code to process datasets provided by GNS [1] and NCLAW [2]
 
 - [1] Sanchez-Gonzales+ Learning to Simulate Complex Physics with Graph Neural Networks
@@ -55,6 +63,34 @@ We provide code to process datasets provided by GNS [1] and NCLAW [2]
     cd Dataset\ Parsers/
     python parseData.py --data_config nclaw_Sand
     python parseData.py --data_config WaterDrop2D
+
+#### Preparing NCLAW datasets
+
+The dt used for the simulations is 5e-3. During generation, this can be set in ```configs/sim/high.yaml```, ```configs/sim/low.yaml```. Alternatively, after generating, every tenth frame can be used in the train dataset
+
+Each material has a hard-coded geometry. This can be found in ```configs/env/blob/armadillo.yaml```, ```configs/env/blob/bunny.yaml``` etc. The defaults can be changed to ```jelly```, ```sand```, ```water```, ```plasticine```. In the file ```nclaw/constants.py``` you can add shapes to ```SHAPE_ENVS``` dictionary. eg. ```'jelly':['bunny', 'armadillo', 'spot', 'blub']```. While generating, this will generate trajectories for all the geometries. To randomize the trajectories, ```config/env/blob/"shape".yaml``` has a parameter called ```override vel```. This can be set to random. Inside ```configs/env/blob/vel/random.yaml```, the seed can be changed to change the initial velocity, altering the trajectory. This can be done manually or within ```eval.py```
+
+    state_root: Path = exp_root / f'state_{seed}' #Add the seed in foldername to create new folders for each trajectory so that the paths look like this /material/shape/armadillo/state_{seed}
+    for blob, blob_cfg in sorted(cfg.env.items()):
+        blob_cfg.vel['seed'] = seed # Add this line
+        
+
+The config files are formatted in a slightly different way, but this can be changed depending on how the dataset is generated
+
+    water
+        - shape_1
+            - armadillo
+                - state
+                    - 0000.pt   #System state at t0
+                    - 0001.pt   #System state at t1
+                    ...
+                - pv
+            - blub
+            - bunny
+            - spot
+        - shape_2
+
+    
 
 #### Train a time-stepper model from the config:
 
