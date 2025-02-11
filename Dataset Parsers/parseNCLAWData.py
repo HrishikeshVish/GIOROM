@@ -20,7 +20,7 @@ class NumpyTypeEncoder(json.JSONEncoder):
 #dataset_name = 'Sand'
 shape_material = {'Sand':'bunny', 'Plasticine':'spot', 'Water':'armadillo'}
 def generate_data(dataset_name, dataset_root_dir, save_root_dir, start_time_step=0, stop_time_step=2000, num_trajectories=16,
-                  start_traj_index=1, num_train_trajectories=12, save_diff_discs=False,
+                  start_traj_index=1, num_train_trajs=12, save_diff_discs=False,
                   jump_time_step=5, window= 6, randomize=True, use_random_seed=False,random_seed=42,test_train_split=0.8,
                   rand_percent_lower=0.05, rand_percent_higher=0.1, num_augmented_train_trajs=20, num_augmented_eval_trajs=1,
                   max_rollout_trajectories=5, set_size_limit=False, max_particle_size=1000, save_hires=True, save_midres=True):
@@ -51,6 +51,7 @@ def generate_data(dataset_name, dataset_root_dir, save_root_dir, start_time_step
     full_rollout_train = []
     full_velocity_train = []
     full_acceleration_train = []
+    num_train_trajectories = num_train_trajs
     assert stop_time_step <=2000
     for i in range(start_traj_index, num_train_trajectories+start_traj_index):
         #

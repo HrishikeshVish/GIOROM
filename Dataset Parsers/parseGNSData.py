@@ -1,7 +1,7 @@
 import torch
 import tensorflow.compat.v1 as tf
 import numpy as np
-from reading_utils import parse_serialized_simulation_example, split_trajectory
+from old_parsers.reading_utils import parse_serialized_simulation_example, split_trajectory
 import json
 import functools
 import tensorflow_datasets as tfds

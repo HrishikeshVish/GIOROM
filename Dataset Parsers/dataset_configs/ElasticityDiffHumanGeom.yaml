@@ -1,6 +1,6 @@
 dataset_name: '0401'
 dataset_root_dir: /home/csuser/Documents/new_dataset/
-dataset_save_dir: /home/csuser/Documents/new_dataset/
+save_root_dir: /home/csuser/Documents/new_dataset/
 traj_dir_prefix: sim_seq_data_1
 train_geoms:
 - 1_p2d

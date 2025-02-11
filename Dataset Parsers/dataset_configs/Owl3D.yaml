@@ -1,6 +1,6 @@
 dataset_name: owl_p2d
-dataset_root_dir: /home/csuser/Documents/new_dataset/
-dataset_save_dir: /home/csuser/Documents/new_dataset/
+dataset_root_dir: /media/csuser/DATA/viscosity_modelling/old_datasets/
+save_root_dir: /home/csuser/Documents/new_dataset/
 traj_dir_prefix: sim_seq_
 start_time_step: 5
 stop_time_step: 605

@@ -95,7 +95,7 @@ def generate_data(dataset_name, dataset_root_dir, save_root_dir,  traj_dir_prefi
         v_std = full_velocity.std(dim=[0,1, 3])
         a_mean = full_acceleration.mean(dim=[0,1, 3])
         a_std = full_acceleration.std(dim=[0,1, 3])
-        meta = {"bounds": np.array([[-2.3160473e-01, 0.232097],[-6.5052130e-19, 0.89966255],[-2.0693564e-01, 0.206798]]), "sequence_length": np.int32(400), "default_connectivity_radius": np.float32(0.015), "dim": np.int32(3), "dt": np.float32(0.025), 
+        meta = {"bounds": np.array([[-2.3160473e-01, 0.232097],[-6.5052130e-19, 0.89966255],[-2.0693564e-01, 0.206798]]), "sequence_length": np.int32(400), "default_connectivity_radius": np.float32(0.105), "dim": np.int32(3), "dt": np.float32(0.025), 
                 "vel_mean": [1.1927917091800243e-05, -0.0002563314637168018], "vel_std": [0.0013973410613251076, 0.00131291713199288], "acc_mean": [-1.10709094667326e-08, 8.749365512454699e-08], "acc_std": [6.545267379756913e-05, 7.965494666766224e-05]}
         meta['vel_mean'] = np.array(list(v_mean.numpy()))
         meta['vel_std'] = np.array(list(v_std.numpy()))
@@ -121,7 +121,7 @@ def generate_data(dataset_name, dataset_root_dir, save_root_dir,  traj_dir_prefi
             
                 position  = np.asarray(data['x']) + np.asarray(data['q'])
                 rollout_traj.append(position)
-        rollout_traj = np.asarray(rollout_traj)
+        rollout_traj = torch.from_numpy(np.asarray(rollout_traj).astype(np.float32))
         full_rollout.append(rollout_traj)
         full_rollout_valid.append(full_rollout)
 
@@ -247,10 +247,11 @@ def generate_data(dataset_name, dataset_root_dir, save_root_dir,  traj_dir_prefi
         y = []
         for i in range(len(full_rollout_valid)):
             shape = full_rollout_valid[i][0].shape[2]
+            print("SHAPE = ", full_rollout_valid[i][0].shape)
             mesh_size = np.random.randint(int(0.971*shape), int(0.986*shape))
             points = sorted(list(random.sample(range(0, shape), mesh_size)))
             position_tensor = []
-            sampled_tensor = full_rollout_valid[0][0].permute(2, 0, 1)
+            sampled_tensor = full_rollout_valid[i][0].permute(2, 0, 1)
             sampled_tensor = sampled_tensor[points].cpu()
             #sampled_tensor = sampled_tensor.permute(1,0,2)
             position.append(sampled_tensor.numpy())
@@ -260,7 +261,7 @@ def generate_data(dataset_name, dataset_root_dir, save_root_dir,  traj_dir_prefi
             y.append(sampled_tensor[6].numpy())
             particle_type.append(p_type)
             
-        print(f'Number of Rollout Trajectories: {position[0].shape}')
+        print(f'Number of Rollout Trajectories: {position[0].shape}, {len(position)}')
 
         train_dict = {'particle_type':particle_type, 'position':position, 'n_particles_per_example':n_particles_per_example, 'output':y}
         

@@ -1,6 +1,6 @@
 dataset_name: Plasticine
-dataset_root_dir: /media/hviswan/Data1/NCLAW Dataset/
-dataset_save_dir: /home/hviswan/Documents/new_dataset/
+dataset_root_dir: /media/csuser/DATA/NCLAW Dataset/
+save_root_dir: /home/csuser/Documents/new_dataset/
 start_time_step: 5
 stop_time_step: 1500
 jump_time_step: 5
