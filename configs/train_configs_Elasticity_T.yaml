@@ -1,7 +1,7 @@
 batch_size: 2
 ckpt_name: giorom3d_T_elasticity
 dataset: elasticity
-dataset_rootdir: /home/csuser/Documents/new_dataset/
+dataset_rootdir: datasets
 epoch: 2000
 eval_interval: 1500
 load_checkpoint: true

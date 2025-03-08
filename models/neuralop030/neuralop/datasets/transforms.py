@@ -3,7 +3,7 @@ from typing import List
 
 import torch
 from torch.utils.data import Dataset
-from neuralop.training.patching import MultigridPatching2D
+from ..training.patching import MultigridPatching2D
 
 class Transform(torch.nn.Module):
     """

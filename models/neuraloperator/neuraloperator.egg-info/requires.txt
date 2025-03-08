@@ -1,4 +1,0 @@
-numpy
-configmypy
-pytest
-black

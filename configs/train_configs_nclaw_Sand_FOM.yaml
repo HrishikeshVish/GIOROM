@@ -1,7 +1,7 @@
 batch_size: 2
 ckpt_name: fom_gno_nclaw_Sand
 dataset: nclaw_Sand
-dataset_rootdir: /home/csuser/Documents/new_dataset/
+dataset_rootdir: datasets
 epoch: 2000
 eval_interval: 1500
 load_checkpoint: true

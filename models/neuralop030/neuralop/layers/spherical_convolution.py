@@ -8,7 +8,7 @@ import tensorly as tl
 from tensorly.plugins import use_opt_einsum
 from tltorch.factorized_tensors.core import FactorizedTensor
 
-from neuralop.utils import validate_scaling_factor
+from ..utils import validate_scaling_factor
 from .base_spectral_conv import BaseSpectralConv
 from .spectral_convolution import SubConv
 

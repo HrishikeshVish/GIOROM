@@ -1,7 +1,7 @@
 batch_size: 4
 ckpt_name: giorom2d_T_WaterDropSmall
 dataset: WaterDropSmall
-dataset_rootdir: /home/csuser/Documents/new_dataset/
+dataset_rootdir: datasets
 epoch: 2000
 eval_interval: 1500
 load_checkpoint: true

@@ -3,7 +3,7 @@ from typing import List, Union
 from torch import nn
 from torch.nn import functional as F
 
-from neuralop.utils import validate_scaling_factor
+from ..utils import validate_scaling_factor
 
 
 class DomainPadding(nn.Module):

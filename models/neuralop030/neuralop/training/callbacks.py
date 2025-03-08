@@ -14,7 +14,7 @@ from typing import List, Union, Literal
 import torch
 import wandb
 
-from neuralop.training.patching import MultigridPatching2D
+from .patching import MultigridPatching2D
 
 class Callback(object):
     """

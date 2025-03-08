@@ -1,6 +1,0 @@
-sphinx
-numpydoc
-matplotlib
-sphinx-gallery
-myst-nb
-tensorly_sphinx_theme
