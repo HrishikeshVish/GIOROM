@@ -35,9 +35,9 @@ import argparse
 from argparse import Namespace
 import yaml
 from training.trainer import ROMTrainer
-from training.train import train
+#from training.train import train
 from transformers import TrainingArguments
-
+from training.train import train
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--config", help="Config File Name")
@@ -111,7 +111,7 @@ if(params.dataset_rootdir is None):
 print("...Loading Dataset...")
 materials = {"Water2D":"WaterDrop2DSmall", "Water3D":"Water3DNCLAWSmall", 
              "Water3D_long":"Water3DNCLAWSmall_longer_duration", "Sand2D":"Sand2DSmall", 
-             "Sand3D":"Sand3DNCLAWSmall", "Sand3D_long":"Sand3DNCLAW_Small_longer_duration", 
+             "Sand3D":"Sand3DNCLAWSmall", "Sand3D_long":"Sand3DNCLAWSmall_longer_duration", 
              "MultiMaterial2D":"MultiMaterial2DSmall", "Plasticine3D":"Plasticine3DNCLAWSmall", 
              "Elasticity3D":"Elasticity3DSmall", "Jelly3D":"Jelly3DNCLAWSmall", "RigidCollision3D":"RigidCollision3DNCLAWSmall", 
              "Melting3D":"Melting3DSampleSeq"}
@@ -138,8 +138,6 @@ if(os.path.exists(checkpoint_directory) == False):
 if(params.load_checkpoint == True):
     if(params.ckpt_name is None):
         raise Exception("No checkpoint Name specified")
-    if(params.ckpt_name.endswith('.pt') == False):
-        params.ckpt_name += '.pt'
     checkpoint = os.path.join(checkpoint_directory, params.ckpt_name)
     if(os.path.exists(checkpoint)==False):
         raise Exception("Invalid Checkpoint Directory")
@@ -147,8 +145,6 @@ if(params.load_checkpoint == True):
 log_directory = os.path.join(os.getcwd(), 'logs')
 if(os.path.exists(log_directory) == False):
     os.mkdir(log_directory)
-
-
 
 if __name__ == '__main__':
     
@@ -173,39 +169,44 @@ if __name__ == '__main__':
     print(f"Number of parameters: {total_params}")
     
     if(params.load_checkpoint):
-        ckpt = torch.load(checkpoint)
-        weights = torch.load(checkpoint)['model']
+        if('.pt' in checkpoint):
+            ckpt = torch.load(checkpoint)
+            weights = torch.load(checkpoint)['model']
 
-        model_dict = simulator.state_dict()
-        ckpt_dict = {}
-        
-        
-        model_dict = dict(model_dict)
-
-        for k, v in weights.items():
-            k2 = k[0:]
+            model_dict = simulator.state_dict()
+            ckpt_dict = {}
             
-            if k2 in model_dict:
-                
-                if model_dict[k2].size() == v.size():
-                    ckpt_dict[k2] = v
-                else:
-                    print("Size mismatch while loading! %s != %s Skipping %s..."%(str(model_dict[k2].size()), str(v.size()), k2))
-                    mismatch = True
-            else:
-                print("Model Dict not in Saved Dict! %s != %s Skipping %s..."%(2, str(v.size()), k2))
-                mismatch = True
-        if len(simulator.state_dict().keys()) > len(ckpt_dict.keys()):
-            print("SIZE MISMATCH")
-            mismatch = True
-        model_dict.update(ckpt_dict)
-        simulator.load_state_dict(model_dict)
-        simulator = simulator.to(device)
-        #optimizer.load_state_dict(ckpt['optimizer'])
-        #scheduler.load_state_dict(ckpt['scheduler'])
+            
+            model_dict = dict(model_dict)
 
-        # ckpt = {}
-        # ckpt['epoch'] = 0
+            for k, v in weights.items():
+                k2 = k[0:]
+                
+                if k2 in model_dict:
+                    
+                    if model_dict[k2].size() == v.size():
+                        ckpt_dict[k2] = v
+                    else:
+                        print("Size mismatch while loading! %s != %s Skipping %s..."%(str(model_dict[k2].size()), str(v.size()), k2))
+                        mismatch = True
+                else:
+                    print("Model Dict not in Saved Dict! %s != %s Skipping %s..."%(2, str(v.size()), k2))
+                    mismatch = True
+            if len(simulator.state_dict().keys()) > len(ckpt_dict.keys()):
+                print("SIZE MISMATCH")
+                mismatch = True
+            model_dict.update(ckpt_dict)
+            simulator.load_state_dict(model_dict)
+            simulator = simulator.to(device)
+        else:
+            model_config = time_stepper_config.from_pretrained(checkpoint)
+            simulator = simulator.from_pretrained(checkpoint)
+            simulator = simulator.to(device)
+            # optimizer_checkpoint = torch.load(checkpoint+'/optimizer.pt')
+            # optimizer.load_state_dict(optimizer_checkpoint)
+            # scheduler_checkpoint = torch.load(checkpoint+'/scheduler.pt')
+            # scheduler.load_state_dict(scheduler_checkpoint)
+        print("Loaded Checkpoint")
         
     else:
         ckpt = {}

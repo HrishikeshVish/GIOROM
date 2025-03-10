@@ -1,41 +1,50 @@
-hidden_size: 128
-n_mp_layers: 2                                                           # number of GNN layers
-num_particle_types: 9
-particle_type_dim: 16                                                     # embedding dimension of particle types
-dim: 3                                                                    # dimension of the world typical 2D or 3D
-window_size: 5                                                            # the model looks into W frames before the frame to be predicted
-heads : 3                                                                 # number of attention heads in GAT and EGAT
+# Model Architecture
+hidden_size: 128  # Hidden layer size for the model
+n_mp_layers: 2  # Number of GNN (Graph Neural Network) layers
+num_particle_types: 9  # Number of distinct particle types
+particle_type_dim: 16  # Embedding dimension of particle types
+dim: 3  # Dimensionality of the world (2D or 3D)
+window_size: 5  # Number of previous frames the model considers for prediction
+heads: 3  # Number of attention heads in GAT and EGAT
 
-use_open3d : false                                                       #GNO Hyperparams
-in_gno_mlp_hidden_layers :
-- 32
-- 64
-in_gno_transform_type : 'nonlinear_kernelonly'
-out_gno_in_dim : 3
-out_gno_hidden: 128
-out_gno_mlp_hidden_layers : 
-- 32
-- 64
+# GNO (Graph Neural Operator) Hyperparameters
+use_open3d: false  # Whether to use Open3D for visualization
 
-gno_radius: 0.125 #Only for Sand
-out_gno_transform_type: 'linear'
+# Input GNO MLP (Multi-Layer Perceptron) Configuration
+in_gno_mlp_hidden_layers:  # Initial layer is hidden_size + dim for non-linear kernel
+  - 131
+  - 32
+  - 64
+  - 64
+in_gno_transform_type: 'nonlinear_kernelonly'  # Transformation type for input GNO
 
-not_heads: 4
-not_layers: 1
-not_output_size: 128
-not_space_dim: 64
-not_branch_size: 3
-not_trunk_size: 64
+# Output GNO MLP Configuration
+out_gno_in_dim: 3  # Input dimension for output GNO
+out_gno_hidden: 128  # Hidden size for output GNO
+out_gno_mlp_hidden_layers:  # Initial layer starts with out_gno_in_dim for linear kernel
+  - 3
+  - 32
+  - 64
+  - 128
+out_gno_transform_type: 'linear'  # Transformation type for output GNO
+gno_radius: 0.125  # Connectivity radius (for Sand dataset, 0.065 otherwise)
 
-projection_channels: 256
-projection_layers: 1
-projection_n_dim : 1
+# Neural Operator Transformer (NOT) Configuration
+not_heads: 4  # Number of attention heads in the NOT module
+not_layers: 1  # Number of layers in NOT
+not_output_size: 128  # Output size of the NOT module
+not_space_dim: 64  # Spatial dimension used in NOT
+not_branch_size: 3  # Branch size for NOT
+not_trunk_size: 64  # Trunk size for NOT
 
-latent_grid_dim : 16
-latent_domain_lims : 
-- - 0.0
-  - 1.0
-- - 0.0
-  - 1.0
-- - 0.0
-  - 1.0
+# Projection Layer Configuration
+projection_channels: 256  # Number of channels in projection layers
+projection_layers: 1  # Number of projection layers
+projection_n_dim: 1  # Projection dimensionality
+
+# Latent Grid Configuration
+latent_grid_dim: 16  # Dimensionality of the latent grid
+latent_domain_lims:  # Domain limits for latent space representation
+  - [0.0, 1.0]
+  - [0.0, 1.0]
+  - [0.0, 1.0]

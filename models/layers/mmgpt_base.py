@@ -11,6 +11,8 @@ from torch.nn.utils.rnn import pad_sequence
 
 from models.layers.layer_utils import MultipleTensors
 from models.layers.mlp import MLP
+from models.layers.layers import SchInteractionNetwork
+from models.layers.layers import MLP as schMLP
 
 
 
@@ -297,6 +299,7 @@ class GPTNOT(nn.Module):
         # self.apply(self._init_weights)
 
         self.__name__ = 'MIOEGPT'
+        
 
     def _init_weights(self, module):
         if isinstance(module, (nn.Linear, nn.Embedding)):

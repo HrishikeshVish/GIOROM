@@ -170,15 +170,12 @@ class ROMTrainer(Trainer):
         data = inputs.to(self.args.device)
         pred = model(data)
 
-        # Custom acceleration computation
-        acceleration = pred * torch.sqrt(torch.tensor(self.metadata["acc_std"]).to(self.args.device) ** 2 + 1e-5) + torch.tensor(self.metadata["acc_mean"]).to(self.args.device)
-        recent_position = data.recent_pos
-        recent_velocity = data.recent_vel
+        acceleration = pred * torch.sqrt(torch.tensor(self.metadata['acc_std']).cuda() ** 2 + self.noise ** 2) + torch.tensor(self.metadata["acc_mean"]).cuda()
+        recent_position = data.position_seq[:, -1]
+        recent_velocity = recent_position - data.position_seq[:, -2]
         new_velocity = recent_velocity + acceleration
         new_position = recent_position + new_velocity
-
-        # Compute loss
-        loss = self.loss_fn(pred, data.y) + 1e5 * self.loss_fn(new_position, data.target_pos)
+        loss = self.loss_fn(pred, data.y) + 1e5*self.loss_fn(new_position, data.target_pos)
 
         return (loss, pred) if return_outputs else loss
     def log(self, logs: dict[str, float], start_time: float = None):

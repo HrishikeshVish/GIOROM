@@ -85,7 +85,7 @@ def rolloutMSE(simulator, dataset, noise):
             rollout_out = rollout_out.permute(1, 0, 2)
             loss = (rollout_out - rollout_data["position"]) ** 2
             loss = loss.sum(dim=-1).mean()
-            #print("ROLLOUT LOSS = ", loss.item())
+            print("ROLLOUT LOSS = ", loss.item())
             total_loss += loss.item()
             batch_count += 1
     return total_loss / batch_count

@@ -49,11 +49,11 @@ class TimeStepperConfig(PretrainedConfig):
                 window_size: int = 5,
                 heads: int = 3,
                 use_open3d: bool = False,
-                in_gno_mlp_hidden_layers: list[int] = [32, 64],
+                in_gno_mlp_hidden_layers: list[int] = [131, 32, 64, 64],
                 in_gno_transform_type: str = 'nonlinear_kernelonly',
                 out_gno_in_dim: int = 3,
                 out_gno_hidden: int = 128,
-                out_gno_mlp_hidden_layers: list[int] = [32, 64],
+                out_gno_mlp_hidden_layers: list[int] = [3, 32, 64, 128],
                 
                 gno_radius: float = 0.125,
                 out_gno_transform_type: str = 'linear',
@@ -68,9 +68,9 @@ class TimeStepperConfig(PretrainedConfig):
                 projection_n_dim: int = 1,
                 
                 latent_grid_dim: int = 16,
-                latent_domain_lims: list[list[float]] = [[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]]):
+                latent_domain_lims: list[list[float]] = [[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]], *args, **kwargs):
         
-        super().__init__()
+        super().__init__( *args, **kwargs)
         
         # Initialize the model configuration
         self.hidden_size = hidden_size
