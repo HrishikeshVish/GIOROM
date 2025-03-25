@@ -3,11 +3,11 @@
 batch_size: 2  # Number of samples per training batch
 
 # Model Checkpointing
-ckpt_name: checkpoint-220000  # Name of the checkpoint to save/load
+ckpt_name: checkpoint-300000  # Name of the checkpoint to save/load
 load_checkpoint: true  # Whether to load a pre-existing checkpoint
 
 # Dataset Settings
-dataset: Sand3D  # Name of the dataset
+dataset: Plasticine3D  # Name of the dataset
 dataset_rootdir: hrishivish23/MPM-Verse-MaterialSim-Small  # Root directory for the dataset
 cache_dir: dataset_mpmverse  # Directory to cache the dataset
 
@@ -17,7 +17,7 @@ epoch: 2000  # Number of training epochs
 lr: 0.0001  # Learning rate
 weight_decay: 0.000001  # Weight decay for optimizer regularization
 gamma: 0.1**(1/5e6)  # Learning rate decay factor
-noise: 0.0000003  # Amount of noise added to input data (for regularization)
+noise: 0  # Amount of noise added to input data (for regularization)
 
 # Model Configuration
 model: giorom3d_T  # Model name
@@ -29,11 +29,11 @@ sampling_strategy: random  # Sampling method (e.g., random, stratified)
 
 # Graph-based Connectivity
 graph_type: radius  # Type of graph connectivity (e.g., 'radius', 'knn')
-connectivity_radius: 0.105  # Radius for graph connections
+connectivity_radius: 0.103  # Radius for graph connections
 
 # Evaluation & Logging
 eval_interval: 1500  # Interval (steps) at which evaluation is performed
 rollout_interval: 1500  # Interval for rollout evaluation
 log_interval: 1500  # Interval (steps) for logging metrics
-save_interval: 110000  # Interval (steps) for saving model checkpoints
+save_interval: 100000  # Interval (steps) for saving model checkpoints
 visualize_graph: false  # Whether to visualize graph connections

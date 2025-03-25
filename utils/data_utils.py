@@ -30,7 +30,6 @@ def generate_noise(position_seq, noise_std):
 
 def preprocess(particle_type, position_seq, target_position, metadata, noise_std, radius=None, graph_type='radius'):
     """Preprocess a trajectory and construct the graph."""
-
     # Apply noise to the trajectory
     position_noise = generate_noise(position_seq, noise_std)
     noisy_position_seq = position_seq + position_noise

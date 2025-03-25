@@ -1,6 +1,6 @@
 # Model Architecture
 hidden_size: 128  # Hidden layer size for the model
-n_mp_layers: 2  # Number of GNN (Graph Neural Network) layers
+n_mp_layers: 4  # Number of GNN (Graph Neural Network) layers
 num_particle_types: 9  # Number of distinct particle types
 particle_type_dim: 16  # Embedding dimension of particle types
 dim: 3  # Dimensionality of the world (2D or 3D)
@@ -13,8 +13,8 @@ use_open3d: false  # Whether to use Open3D for visualization
 # Input GNO MLP (Multi-Layer Perceptron) Configuration
 in_gno_mlp_hidden_layers:  # Initial layer is hidden_size + dim for non-linear kernel
   - 131
-  - 32
-  - 64
+  - 112
+  - 86
   - 64
 in_gno_transform_type: 'nonlinear_kernelonly'  # Transformation type for input GNO
 
@@ -27,11 +27,11 @@ out_gno_mlp_hidden_layers:  # Initial layer starts with out_gno_in_dim for linea
   - 64
   - 128
 out_gno_transform_type: 'linear'  # Transformation type for output GNO
-gno_radius: 0.165  # Connectivity radius (0.125 for Sand dataset, 0.065 otherwise)
+gno_radius: 0.025  # Connectivity radius (0.125 for Sand dataset, 0.065 otherwise)
 
 # Neural Operator Transformer (NOT) Configuration
 not_heads: 4  # Number of attention heads in the NOT module
-not_layers: 1  # Number of layers in NOT
+not_layers: 3  # Number of layers in NOT
 not_output_size: 128  # Output size of the NOT module
 not_space_dim: 64  # Spatial dimension used in NOT
 not_branch_size: 3  # Branch size for NOT
@@ -43,7 +43,7 @@ projection_layers: 1  # Number of projection layers
 projection_n_dim: 1  # Projection dimensionality
 
 # Latent Grid Configuration
-latent_grid_dim: 16  # Dimensionality of the latent grid
+latent_grid_dim: 12  # Dimensionality of the latent grid
 latent_domain_lims:  # Domain limits for latent space representation
   - [0.0, 1.0]
   - [0.0, 1.0]

@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
     train_dataset = OneStepDataset(train_dir, metadata_dir, noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius)
     valid_dataset = OneStepDataset(test_dir, metadata_dir, noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius)
-    rollout_dataset = RolloutDataset(rollout_dir, metadata_dir, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius, mesh_size=170)[:2]
+    rollout_dataset = RolloutDataset(rollout_dir, metadata_dir, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius, mesh_size=170)[2:]
     train_loader = pyg.loader.DataLoader(train_dataset, batch_size=params.batch_size, shuffle=True)
     valid_loader = pyg.loader.DataLoader(valid_dataset, batch_size=params.batch_size, shuffle=False)
 
@@ -200,7 +200,7 @@ if __name__ == '__main__':
             simulator = simulator.to(device)
         else:
             model_config = time_stepper_config.from_pretrained(checkpoint)
-            simulator = simulator.from_pretrained(checkpoint)
+            simulator = simulator.from_pretrained(checkpoint, config=model_config)
             simulator = simulator.to(device)
             # optimizer_checkpoint = torch.load(checkpoint+'/optimizer.pt')
             # optimizer.load_state_dict(optimizer_checkpoint)

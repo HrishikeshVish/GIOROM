@@ -175,7 +175,7 @@ class ROMTrainer(Trainer):
         recent_velocity = recent_position - data.position_seq[:, -2]
         new_velocity = recent_velocity + acceleration
         new_position = recent_position + new_velocity
-        loss = self.loss_fn(pred, data.y) + 1e5*self.loss_fn(new_position, data.target_pos)
+        loss = self.loss_fn(pred, data.y) + 1e9*self.loss_fn(new_position, data.target_pos)
 
         return (loss, pred) if return_outputs else loss
     def log(self, logs: dict[str, float], start_time: float = None):

@@ -71,7 +71,6 @@ dynamic systems.
         self.out_layers = nn.ModuleList(
             [SchInteractionNetwork(config.hidden_size, 3) for _ in range(config.n_mp_layers)]
         )
-
         # Neural Operator Transformer
         self.gnot_layer = GNOT(
             self._device,

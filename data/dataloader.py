@@ -103,11 +103,18 @@ class RolloutDataset(pyg.data.Dataset):
         self.sampling_strategy = sampling_strategy
         self.radius = radius
         self.tensorpath = data_path
-        dataset = torch.load(self.tensorpath)
-        self.particle_type = dataset['particle_type']
+        #dataset = torch.load(self.tensorpath)
+        if('.pt' in self.tensorpath):
+            dataset = torch.load(self.tensorpath)
+        else:
+            file = open(self.tensorpath, 'rb')
+            dataset = pickle.load(file)
+        #self.particle_type = dataset['particle_type']
+        
         self.position = dataset['position']
-        self.n_particles_per_example = dataset['n_particles_per_example']
-        self.outputs = dataset['output']
+        #self.particle_type = torch.ones_like(self.position.shape[1]).numpy()
+        #self.n_particles_per_example = dataset['n_particles_per_example']
+        #self.outputs = dataset['output']
         self.mesh_size = mesh_size
 
         self.dim = self.position[0].shape[2]
@@ -117,12 +124,11 @@ class RolloutDataset(pyg.data.Dataset):
     
     def get(self, idx):
 
-
-        particle_type = torch.from_numpy(self.particle_type[idx])
+        particle_type = torch.ones(self.position[idx].shape[0], dtype=torch.int32)*5
         position_seq = torch.from_numpy(self.position[idx])
         position_seq = torch.permute(position_seq, dims=(1,0,2))
         
-        target_position = torch.from_numpy(self.outputs[idx])
+        #target_position = torch.from_numpy(self.outputs[idx])
         if(self.sampling):
             if(self.sampling_strategy == 'random'):
                 self.points = sorted(random.sample(range(0, particle_type.shape[0]), self.mesh_size))
