@@ -100,6 +100,8 @@ elif(params.model == 'giorom3d_T'):
     from models.giorom3d_T import PhysicsEngine
 elif(params.model == 'giorom2d_T'):
     from models.giorom2d_T import PhysicsEngine
+elif(params.model == 'giorom3d_T_small'):
+    from models.giorom3d_T_small import PhysicsEngine
 else:
     raise Exception("Invalid model name")
 
@@ -135,12 +137,14 @@ else:
 checkpoint_directory = os.path.join(os.getcwd(), 'saved_models')
 if(os.path.exists(checkpoint_directory) == False):
     os.mkdir(checkpoint_directory)
-if(params.load_checkpoint == True):
+if(params.load_checkpoint == True and params.load_huggingface == False):
     if(params.ckpt_name is None):
         raise Exception("No checkpoint Name specified")
     checkpoint = os.path.join(checkpoint_directory, params.ckpt_name)
     if(os.path.exists(checkpoint)==False):
         raise Exception("Invalid Checkpoint Directory")
+if(params.load_checkpoint == True and params.load_huggingface == True):
+    checkpoint = params.ckpt_name
 
 log_directory = os.path.join(os.getcwd(), 'logs')
 if(os.path.exists(log_directory) == False):
@@ -152,7 +156,10 @@ if __name__ == '__main__':
 
     train_dataset = OneStepDataset(train_dir, metadata_dir, noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius)
     valid_dataset = OneStepDataset(test_dir, metadata_dir, noise_std=params.noise, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius)
-    rollout_dataset = RolloutDataset(rollout_dir, metadata_dir, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius, mesh_size=170)[2:]
+    rollout_dataset = RolloutDataset(rollout_dir, metadata_dir, sampling_strategy=params.sampling, graph_type=params.graph_type,radius=params.connectivity_radius, mesh_size=170)[6:]
+    
+    
+    
     train_loader = pyg.loader.DataLoader(train_dataset, batch_size=params.batch_size, shuffle=True)
     valid_loader = pyg.loader.DataLoader(valid_dataset, batch_size=params.batch_size, shuffle=False)
 
@@ -200,12 +207,12 @@ if __name__ == '__main__':
             simulator = simulator.to(device)
         else:
             model_config = time_stepper_config.from_pretrained(checkpoint)
-            simulator = simulator.from_pretrained(checkpoint, config=model_config)
+            simulator = simulator.from_pretrained(checkpoint)
             simulator = simulator.to(device)
-            # optimizer_checkpoint = torch.load(checkpoint+'/optimizer.pt')
-            # optimizer.load_state_dict(optimizer_checkpoint)
-            # scheduler_checkpoint = torch.load(checkpoint+'/scheduler.pt')
-            # scheduler.load_state_dict(scheduler_checkpoint)
+            optimizer_checkpoint = torch.load(checkpoint+'/optimizer.pt')
+            optimizer.load_state_dict(optimizer_checkpoint)
+            scheduler_checkpoint = torch.load(checkpoint+'/scheduler.pt')
+            scheduler.load_state_dict(scheduler_checkpoint)
         print("Loaded Checkpoint")
         
     else:

@@ -3,8 +3,9 @@
 batch_size: 2  # Number of samples per training batch
 
 # Model Checkpointing
-ckpt_name: checkpoint-220000  # Name of the checkpoint to save/load
+ckpt_name: hrishivish23/giorom-3d-t-sand-3d  # Name of the checkpoint to save/load
 load_checkpoint: true  # Whether to load a pre-existing checkpoint
+load_huggingface: true # Load model from Hugging Face Hub if true
 
 # Dataset Settings
 dataset: Sand3D  # Name of the dataset
@@ -17,7 +18,7 @@ epoch: 2000  # Number of training epochs
 lr: 0.0001  # Learning rate
 weight_decay: 0.000001  # Weight decay for optimizer regularization
 gamma: 0.1**(1/5e6)  # Learning rate decay factor
-noise: 0.0000003  # Amount of noise added to input data (for regularization)
+noise: 0.000028  # Amount of noise added to input data (for regularization)
 
 # Model Configuration
 model: giorom3d_T  # Model name

@@ -127,7 +127,6 @@ class RolloutDataset(pyg.data.Dataset):
         particle_type = torch.ones(self.position[idx].shape[0], dtype=torch.int32)*5
         position_seq = torch.from_numpy(self.position[idx])
         position_seq = torch.permute(position_seq, dims=(1,0,2))
-        
         #target_position = torch.from_numpy(self.outputs[idx])
         if(self.sampling):
             if(self.sampling_strategy == 'random'):

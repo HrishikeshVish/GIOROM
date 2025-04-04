@@ -21,14 +21,18 @@ fno_preactivation : true
 
 use_open3d : false                                                       #GNO Hyperparams
 in_gno_mlp_hidden_layers :
+- 4
 - 32
 - 64
+- 32
 in_gno_transform_type : 'nonlinear_kernelonly'
 out_gno_in_dim : 2
 out_gno_hidden: 128
 out_gno_mlp_hidden_layers : 
+- 2
 - 32
 - 64
+- 128
 
 gno_radius: 0.024
 out_gno_transform_type: 'linear'
@@ -43,3 +47,11 @@ latent_domain_lims :
   - 1.0
 - - 0.0
   - 1.0
+
+# Neural Operator Transformer (NOT) Configuration
+not_heads: 4  # Number of attention heads in the NOT module
+not_layers: 2  # Number of layers in NOT
+not_output_size: 128  # Output size of the NOT module
+not_space_dim: 32  # Spatial dimension used in NOT
+not_branch_size: 2  # Branch size for NOT
+not_trunk_size: 32  # Trunk size for NOT
