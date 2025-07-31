@@ -96,11 +96,11 @@ All the config paths provided are for reference and need to be updated before th
 
 #### Train a time-stepper model from the config:
 
-    python train.py --train_config train_configs_nclaw_Water
+    python run.py --train_config train_configs_nclaw_Water
 
 #### Train a time-stepper model with args:
 
-    python train.py --batch_size 2 --epoch 100 --lr 0.0001 --noise 0.0003 --eval_interval 1500 --rollout_interval 1500 --sampling true --sampling_strategy fps --graph_type radius --connectivity_radius 0.032 --model giorom2d_large --dataset WaterDrop2D --load_checkpoint true --ckpt_name giorom2d_large_WaterDrop2D --dataset_rootdir giorom_datasets/
+    python run.py --batch_size 2 --epoch 100 --lr 0.0001 --noise 0.0003 --eval_interval 1500 --rollout_interval 1500 --sampling true --sampling_strategy fps --graph_type radius --connectivity_radius 0.032 --model giorom2d_large --dataset WaterDrop2D --load_checkpoint true --ckpt_name giorom2d_large_WaterDrop2D --dataset_rootdir giorom_datasets/
 
 #### Evaluate a time-stepper model (Untested code):
 
