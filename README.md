@@ -44,6 +44,12 @@ We provide code to process datasets provided by GNS [1] and NCLAW [2]
 
 #### Preparing NCLAW datasets
 
+> **Dataset Requirement:** The datasets used in our experiments must be generated using the official implementation from the paper *Learning Neural Constitutive Laws from Motion Observations for Generalizable PDE Dynamics* (Ma et al., ICML 2023). Specifically:
+>
+> Ma, P., Chen, P. Y., Deng, B., Tenenbaum, J. B., Du, T., Gan, C., & Matusik, W. (2023). *Learning Neural Constitutive Laws from Motion Observations for Generalizable PDE Dynamics*. International Conference on Machine Learning (ICML), PMLR, pp. 23279–23300.
+>
+> If you wish to  re-build the dataset using their repository and simulation framework before running our model, follow the procedure described below.
+
 The dt used for the simulations is 5e-3. During generation, this can be set in ```configs/sim/high.yaml```, ```configs/sim/low.yaml```. Alternatively, after generating, every tenth frame can be used in the train dataset
 
 Each material has a hard-coded geometry. This can be found in ```configs/env/blob/armadillo.yaml```, ```configs/env/blob/bunny.yaml``` etc. The defaults can be changed to ```jelly```, ```sand```, ```water```, ```plasticine```. In the file ```nclaw/constants.py``` you can add shapes to ```SHAPE_ENVS``` dictionary. eg. ```'jelly':['bunny', 'armadillo', 'spot', 'blub']```. While generating, this will generate trajectories for all the geometries. To randomize the trajectories, ```config/env/blob/"shape".yaml``` has a parameter called ```override vel```. This can be set to random. Inside ```configs/env/blob/vel/random.yaml```, the seed can be changed to change the initial velocity, altering the trajectory. This can be done manually or within ```eval.py```
