@@ -10,7 +10,8 @@
 
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10%2B-598BE7?style=for-the-badge&logo=python&logoColor=598BE7&labelColor=F0F0F0"/></a> &emsp;
 <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=EE4C2C&labelColor=F0F0F0"/></a> &emsp;
-<a href="https://developer.nvidia.com/cuda-toolkit"><img src="https://img.shields.io/badge/CUDA-12.1-76B900?style=for-the-badge&logo=nvidia&logoColor=76B900&labelColor=F0F0F0"/></a>
+<a href="https://developer.nvidia.com/cuda-toolkit"><img src="https://img.shields.io/badge/CUDA-12.1-76B900?style=for-the-badge&logo=nvidia&logoColor=76B900&labelColor=F0F0F0"/></a> &emsp;
+<a href="https://huggingface.co/datasets/hrishivish23/MPM-Verse-MaterialSim-Small"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Datasets-F8D521?style=for-the-badge&labelColor=F0F0F0"/></a>
 
 <div id="toc">
   <ul align="center" style="list-style: none;">
@@ -38,11 +39,28 @@ From the parent directory, install the required dependencies:
 conda create --name giorom_env --file requirements.txt
 conda activate giorom_env
 ```
+
 #### 📂 Datasets
+We support existing datasets provided by GNS and new datasets curated from the NCLAW framework. You can either download our pre-processed datasets directly from Hugging Face or process them manually.
 
-We support existing datasets provided by GNS and new datasets curated from the NCLAW framework.
+**Option 1: Download from Hugging Face (Recommended)**
+We host our ready-to-use datasets on Hugging Face at hrishivish23/MPM-Verse-MaterialSim-Small. You can use the provided Python script to selectively download specific materials or fetch the entire suite.
 
-Create a directory for your datasets:
+Usage Examples:
+
+```bash
+
+# Download a specific dataset
+python download_hf_data.py -s Water2D
+```
+
+# Download all available datasets
+```bash
+python download_hf_data.py -s all
+```
+
+**Option 2: Manual Directory Setup & Preprocessing**
+If you are generating your own data or bypassing Hugging Face, create a directory for your datasets manually:
 
 ```bash
 mkdir giorom_datasets
