@@ -129,7 +129,7 @@ Navigate to the online_phase directory to run the master experimental pipeline. 
 
 ```Shell
 
-cd online_phase
+cd online
 chmod +x run_experiments.sh
 
 # Run the master sweep across all models and datasets
