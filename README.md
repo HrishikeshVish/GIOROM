@@ -144,6 +144,20 @@ To run ablation studies on GIOROM's grid resolution and sparsity tolerances:
 chmod +x run_ablations.sh
 ./run_ablations.sh
 ```
+
+#### Acknowledgments
+
+This codebase is inspired by or partly uses code from the following repositories:
+
+- [NCLaw](https://github.com/PingchuanMa/NCLaw) for the dataset generation and material simulation framework.
+- [CROM](https://crom-pde.github.io/) for the Continuous Reduced-Order Modeling framework and offline baseline implementations.
+- [LiCROM](https://github.com/Changy1506/LiCROM_all) for the LiCROM baseline implementation.
+- [Learning to Simulate (GNS)](https://github.com/google-deepmind/deepmind-research/tree/master/learning_to_simulate) for the dataset structure and graph-based physics simulation utilities.
+- [NeuralOperator](https://github.com/neuraloperator/neuraloperator) for the core neural operator architectures.
+- [GNOT](https://github.com/HaoZhongkai/GNOT) for the Neural Operator Transformer baseline implementations.
+
+
+
 #### Citation
 If you find this codebase or benchmark suite useful in your research, please consider citing our paper:
 
