@@ -1,8 +1,34 @@
-This directory contains the code for processing raw simulation data and training the offline full-order and time-stepper models.  
+<div align="center">
 
+<div id="user-content-toc">
+  <ul align="center" style="list-style: none;">
+    <summary>
+      <h1>GIOROM: Offline Phase & Data Preparation</h1>
+    </summary>
+  </ul>
+</div>
+
+<a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10%2B-598BE7?style=for-the-badge&logo=python&logoColor=598BE7&labelColor=F0F0F0"/></a> &emsp;
+<a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=EE4C2C&labelColor=F0F0F0"/></a> &emsp;
+<a href="https://developer.nvidia.com/cuda-toolkit"><img src="https://img.shields.io/badge/CUDA-12.1-76B900?style=for-the-badge&logo=nvidia&logoColor=76B900&labelColor=F0F0F0"/></a>
+
+<div id="toc">
+  <ul align="center" style="list-style: none;">
+    <summary>
+      <h2><a href="../README.md">Back to Main</a> &emsp; <a href="https://hrishikeshvish.github.io/projects/giorom.html">Project Page</a> &emsp; <a href="https://drive.google.com/drive/folders/1CWMdqKaCtLy8KhA-DIBpS07M6CSuMjgQ?usp=sharing">Data & Weights</a></h2>
+    </summary>
+  </ul>
+</div>
+
+</div>
+
+# Overview
+
+This directory contains the code for processing raw simulation data and training the offline full-order and time-stepper models.
+
+> [!NOTE]
 > **Disclaimer:** The core contribution of our paper is the **Online Phase** algorithm. While we provide this offline training code for reproducibility, our pipeline is highly flexible. In practice, *any* high-fidelity physics simulator or neural network can be utilized for the offline phase to generate the foundational trajectories.
 
----
 
 #### ⚙️ Setup & Installation
 
