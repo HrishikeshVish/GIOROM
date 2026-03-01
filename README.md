@@ -49,10 +49,10 @@ To ensure modularity and clean benchmarking, this repository is divided into two
 > **A Note on Methodology:** In a practical deployment, the sparse inputs for the online phase are generated iteratively by a slow, high-fidelity offline model. However, to ensure computational efficiency and exact reproducibility for this benchmark, we sample the sparse observations directly from the ground-truth offline datasets to train and evaluate the online ROMs.
 
 ### 1. `online/` (Core Contribution & Benchmarks)
-Contains the JAX-based GIOROM architecture alongside PyTorch implementations of all baseline ROMs. It includes a unified evaluation engine that guarantees fair, apples-to-apples comparisons across all models regarding inference time, memory footprint, and reconstruction accuracy. See the [`online_phase/README.md`](./online_phase/README.md) for full execution details.
+Contains the JAX-based GIOROM architecture alongside PyTorch implementations of all baseline ROMs. It includes a unified evaluation engine that guarantees fair, apples-to-apples comparisons across all models regarding inference time, memory footprint, and reconstruction accuracy. See the [`online_phase/README.md`](./online/README.md) for full execution details.
 
 ### 2. `offline/` (Data Prep & Baselines)
-Contains the code for processing raw simulation data (GNS / NCLAW) and training the offline full-order and time-stepper models. While we provide our specific offline training code for reproducibility, **GIOROM is strictly agnostic to the offline model**. Any suitable high-fidelity physics simulator can be used to generate the prior trajectories. See the [`offline_phase/README.md`](./offline_phase/README.md) for details.
+Contains the code for processing raw simulation data (GNS / NCLAW) and training the offline full-order and time-stepper models. While we provide our specific offline training code for reproducibility, **GIOROM is strictly agnostic to the offline model**. Any suitable high-fidelity physics simulator can be used to generate the prior trajectories. See the [`offline_phase/README.md`](./offline/README.md) for details.
 
 # Quick Start
 
@@ -68,8 +68,46 @@ cd GIOROM
 # Create the environment
 conda create --name giorom_env python=3.10
 conda activate giorom_env
+```
 
-# Install dependencies
+Because GIOROM utilizes both **JAX** (for the core method) and **PyTorch** (for the baseline suite and data loaders), the environment must be built carefully to prevent CUDA library conflicts. 
+
+We highly recommend following these exact steps to ensure both frameworks correctly bind to your GPU, and that `torch-geometric` compiles properly.
+
+**Step 1: Create the Environment**
+```shell
+conda create --name giorom_env python=3.10 -y
+conda activate giorom_env
+```
+
+**Step 2: Install PyTorch (CUDA 12.1)**
+We use PyTorch 2.4.0. Ensure your system CUDA driver supports 12.1.
+
+```Shell
+
+pip install torch==2.4.0 torchvision torchaudio --index-url [https://download.pytorch.org/whl/cu121](https://download.pytorch.org/whl/cu121)
+```
+**Step 3: Install Torch Geometric & Dependencies**
+These wheels must exactly match the PyTorch version (2.4.0) and CUDA version (cu121).
+
+```Shell
+
+pip install torch_geometric
+pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f [https://data.pyg.org/whl/torch-2.4.0+cu121.html](https://data.pyg.org/whl/torch-2.4.0+cu121.html)
+```
+
+**Step 4: Install JAX (CUDA 12)**
+We use JAX 0.4.29 built for CUDA 12.
+
+```Shell
+
+pip install --upgrade "jax[cuda12]==0.4.29"
+```
+
+**Step 5: Install Remaining Generic Dependencies**
+
+```Shell
+
 pip install -r requirements.txt
 ```
 
@@ -79,11 +117,11 @@ All necessary datasets (NCLAW/GNS formats) and pre-trained offline weights for b
 For the automated scripts to work out-of-the-box, extract the downloaded data into a /data/ directory. The master execution script expects the following path variables (which you can modify at the top of run_experiments.sh):
 
 ```bash
-H5_DATA_BASE="/data/CROM_dataset/CROM_Ready_Data"
+H5_DATA_BASE="online/data/CROM_dataset/CROM_Ready_Data"
 
-PT_DATA_BASE="/data/pt_dataset"
+PT_DATA_BASE="online/data/pt_dataset"
 
-OFFLINE_BASE="/data/CROM_offline_training"
+OFFLINE_BASE="online/data/CROM_offline_training"
 ```
 
 Running the Online Benchmarks
