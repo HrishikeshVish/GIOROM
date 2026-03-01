@@ -4,6 +4,7 @@
   <ul align="center" style="list-style: none;">
     <summary>
       <h1>Learning Lagrangian Interaction Dynamics with Sampling-Based Model Order Reduction</h1>
+      <i>Transactions on Machine Learning Research (TMLR)<i>
     </summary>
   </ul>
 </div>
