@@ -54,7 +54,8 @@ Usage Examples:
 python download_hf_data.py -s Water2D
 ```
 
-# Download all available datasets
+***Download all available datasets***
+
 ```bash
 python download_hf_data.py -s all
 ```
