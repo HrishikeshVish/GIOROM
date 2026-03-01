@@ -1,98 +1,125 @@
-This directory contains the code for processing raw simulation data and training the offline full-order and time-stepper models.  
+<div align="center">
 
-> **Disclaimer:** The core contribution of our paper is the **Online Phase** algorithm. While we provide this offline training code for reproducibility, our pipeline is highly flexible. In practice, *any* high-fidelity physics simulator or neural network can be utilized for the offline phase to generate the foundational trajectories.
+<div id="user-content-toc">
+  <ul align="center" style="list-style: none;">
+    <summary>
+      <h1>Learning Lagrangian Interaction Dynamics with Sampling-Based Model Order Reduction</h1>
+    </summary>
+  </ul>
+</div>
 
----
+<a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10%2B-598BE7?style=for-the-badge&logo=python&logoColor=598BE7&labelColor=F0F0F0"/></a> &emsp;
+<a href="https://github.com/google/jax"><img src="https://img.shields.io/badge/JAX-Supported-9A52BA?style=for-the-badge&logo=jupyter&logoColor=9A52BA&labelColor=F0F0F0"/></a> &emsp;
+<a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=EE4C2C&labelColor=F0F0F0"/></a> &emsp;
+<a href="https://developer.nvidia.com/cuda-toolkit"><img src="https://img.shields.io/badge/CUDA-12.1-76B900?style=for-the-badge&logo=nvidia&logoColor=76B900&labelColor=F0F0F0"/></a>
 
-#### ⚙️ Setup & Installation
+<br><br>
+<img src="Res/giorom.png" width="850px" alt="GIOROM Pipeline"/>
+<br><br>
 
-From the parent directory, install the required dependencies:
+<p align="center">
+  <img src="Res/neuraloperator.gif" width="30%" />
+  <img src="Res/neuralfield.gif" width="30%" />
+  <img src="Res/rendered.gif" width="30%" /> <br>
+  <em>Neural Operator Inference &emsp;&emsp;&emsp; Discretization Agnostic FOM &emsp;&emsp;&emsp; Final Rendering</em>
+</p>
 
-```bash
-conda create --name giorom_env --file requirements.txt
+<div id="toc">
+  <ul align="center" style="list-style: none;">
+    <summary>
+      <h2><a href="https://arxiv.org/pdf/2407.03925">Paper</a> &emsp; <a href="https://hrishikeshvish.github.io/projects/giorom.html">Project Page</a> &emsp; <a href="https://drive.google.com/drive/folders/1CWMdqKaCtLy8KhA-DIBpS07M6CSuMjgQ?usp=sharing">Weights</a> &emsp; <a href="https://sites.google.com/view/learning-to-simulate">Data</a></h2>
+    </summary>
+  </ul>
+</div>
+
+</div>
+
+# Overview
+
+**GIOROM** Simulating physical systems governed by Lagrangian dynamics often entails solving partial differential equations (PDEs) over high-resolution spatial domains, leading to significant computational expense. Reduced-order modeling (ROM) mitigates this cost by evolving low-dimensional latent representations of the underlying system. While neural ROMs enable querying solutions from latent states at arbitrary spatial points, their latent states typically represent the global domain and struggle to capture localized, highly dynamic behaviors such as fluids. We propose a sampling-based reduction framework that evolves Lagrangian systems directly in physical space, over the particles themselves, reducing the number of active degrees of freedom via data-driven neural PDE operators. To enable querying at arbitrary spatial locations, we introduce a learnable kernel parameterization that uses local spatial information from time-evolved sample particles to infer the underlying solution manifold. Empirically, our approach achieves a 6.6–32x
+ reduction in input dimensionality while maintaining high-fidelity evaluations across diverse Lagrangian regimes, including fluid flows, granular media, and elastoplastic dynamics. We refer to this framework as GIOROM (\textbf{G}eometry-\textbf{I}nf\textbf{O}rmed \textbf{R}educed-\textbf{O}rder \textbf{M}odeling).
+
+### Features
+
+- **25× Speedup**: Vastly outperforms existing neural network-based physics simulators while delivering high-fidelity predictions.
+- **Massive Upsampling**: Infers dense point clouds of ~100,000 points from highly sparse sensor graphs of ~1,000 points with negligible computational overhead. 
+- **Discretization-Agnostic**: Geometry-aware architecture that seamlessly generalizes to new initial conditions, velocities, and unseen geometries post-training.
+- **5 Complex Physical Systems**: Empirically validated on elastic solids, Newtonian fluids, Non-Newtonian fluids, Drucker-Prager granular flows, and von Mises elastoplasticity.
+- **Comprehensive ROM Benchmark Suite**: Includes clean, well-tuned, modular implementations of 6 state-of-the-art baseline Reduced Order Models (PCA, GNO, LiCROM, DINo, CORAL, and CoLoRA).
+- **Fully Automated Pipelines**: Single-command execution for model training, metrics aggregation (Chamfer, Rel L2, VRAM), and professional Blender 3D video rendering.
+
+# Repository Structure
+
+To ensure modularity and clean benchmarking, this repository is divided into two distinct phases. **Our core algorithmic contributions lie in the Online Phase.**
+
+> [!NOTE]
+> **A Note on Methodology:** In a practical deployment, the sparse inputs for the online phase are generated iteratively by a slow, high-fidelity offline model. However, to ensure computational efficiency and exact reproducibility for this benchmark, we sample the sparse observations directly from the ground-truth offline datasets to train and evaluate the online ROMs.
+
+### 1. `online/` (Core Contribution & Benchmarks)
+Contains the JAX-based GIOROM architecture alongside PyTorch implementations of all baseline ROMs. It includes a unified evaluation engine that guarantees fair, apples-to-apples comparisons across all models regarding inference time, memory footprint, and reconstruction accuracy. See the [`online_phase/README.md`](./online_phase/README.md) for full execution details.
+
+### 2. `offline/` (Data Prep & Baselines)
+Contains the code for processing raw simulation data (GNS / NCLAW) and training the offline full-order and time-stepper models. While we provide our specific offline training code for reproducibility, **GIOROM is strictly agnostic to the offline model**. Any suitable high-fidelity physics simulator can be used to generate the prior trajectories. See the [`offline_phase/README.md`](./offline_phase/README.md) for details.
+
+# Quick Start
+
+### Installation
+
+We recommend using Conda to manage dependencies. GIOROM utilizes both JAX (for the core online method) and PyTorch (for the offline model and baseline benchmark suite).
+
+```shell
+# Clone the repository
+git clone [https://github.com/HrishikeshVish/GIOROM.git](https://github.com/HrishikeshVish/GIOROM.git)
+cd GIOROM
+
+# Create the environment
+conda create --name giorom_env python=3.10
 conda activate giorom_env
+
+# Install dependencies
+pip install -r requirements.txt
 ```
-#### 📂 Datasets
 
-We support existing datasets provided by GNS and new datasets curated from the NCLAW framework.
+### Data & Weights
+All necessary datasets (NCLAW/GNS formats) and pre-trained offline weights for baseline ROM models are available on our Google Drive.
 
-Create a directory for your datasets:
+For the automated scripts to work out-of-the-box, extract the downloaded data into a /data/ directory. The master execution script expects the following path variables (which you can modify at the top of run_experiments.sh):
 
 ```bash
-mkdir giorom_datasets
-mkdir giorom_datasets/<datasetname>
+H5_DATA_BASE="/data/CROM_dataset/CROM_Ready_Data"
+
+PT_DATA_BASE="/data/pt_dataset"
+
+OFFLINE_BASE="/data/CROM_offline_training"
 ```
 
-For each dataset, there should be 4 files within the dataset directory. In some cases there's a fifth file rollout_full, which is the full pointcloud (not sampled). Typically, rollout.pt contains sampled points for space efficiency. For small datasets such as WaterDrop2D, the full point cloud has ~2000 points and does not contain a rollout_full.pt. For example, nclaw_Water would look something like this
+Running the Online Benchmarks
+Navigate to the online_phase directory to run the master experimental pipeline. This script trains the baselines, evaluates GIOROM, aggregates all metrics into CSVs, and optionally stitches 3D Blender renders into .mp4 comparison videos.
 
-    giorom_datasets/nclaw_Water/metadata.json
-    giorom_datasets/nclaw_Water/rollout_full.pt
-    giorom_datasets/nclaw_Water/test.pt
-    giorom_datasets/nclaw_Water/train.obj
-    giorom_datasets/nclaw_Water/rollout.pt
+```Shell
 
-We provide code to process datasets provided by GNS [1] and NCLAW [2]
+cd online_phase
+chmod +x run_experiments.sh
 
-- [1] Sanchez-Gonzales+ Learning to Simulate Complex Physics with Graph Neural Networks
-- [2] Ma+ Learning neural constitutive laws from motion observations for generalizable pde dynamics
+# Run the master sweep across all models and datasets
+./run_experiments.sh
+```
 
-#### Dataset preprocessing:
+To run ablation studies on GIOROM's grid resolution and sparsity tolerances:
 
-    cd Dataset\ Parsers/
-    python parseData.py --data_config nclaw_Sand
-    python parseData.py --data_config WaterDrop2D
+```Shell
 
-#### Preparing NCLAW datasets
+chmod +x run_ablations.sh
+./run_ablations.sh
+```
+#### Citation
+If you find this codebase or benchmark suite useful in your research, please consider citing our paper:
 
-> **Dataset Requirement:** The datasets used in our experiments must be generated using the official implementation from the paper *Learning Neural Constitutive Laws from Motion Observations for Generalizable PDE Dynamics* (Ma et al., ICML 2023). Specifically:
->
-> Ma, P., Chen, P. Y., Deng, B., Tenenbaum, J. B., Du, T., Gan, C., & Matusik, W. (2023). *Learning Neural Constitutive Laws from Motion Observations for Generalizable PDE Dynamics*. International Conference on Machine Learning (ICML), PMLR, pp. 23279–23300.
->
-> If you wish to  re-build the dataset using their repository and simulation framework before running our model, follow the procedure described below.
+Code snippet
 
-The dt used for the simulations is 5e-3. During generation, this can be set in ```configs/sim/high.yaml```, ```configs/sim/low.yaml```. Alternatively, after generating, every tenth frame can be used in the train dataset
-
-Each material has a hard-coded geometry. This can be found in ```configs/env/blob/armadillo.yaml```, ```configs/env/blob/bunny.yaml``` etc. The defaults can be changed to ```jelly```, ```sand```, ```water```, ```plasticine```. In the file ```nclaw/constants.py``` you can add shapes to ```SHAPE_ENVS``` dictionary. eg. ```'jelly':['bunny', 'armadillo', 'spot', 'blub']```. While generating, this will generate trajectories for all the geometries. To randomize the trajectories, ```config/env/blob/"shape".yaml``` has a parameter called ```override vel```. This can be set to random. Inside ```configs/env/blob/vel/random.yaml```, the seed can be changed to change the initial velocity, altering the trajectory. This can be done manually or within ```eval.py```
-
-    state_root: Path = exp_root / f'state_{seed}' #Add the seed in foldername to create new folders for each trajectory so that the paths look like this /material/shape/armadillo/state_{seed}
-    for blob, blob_cfg in sorted(cfg.env.items()):
-        blob_cfg.vel['seed'] = seed # Add this line
-        
-
-The config files are formatted in a slightly different way, but this can be changed depending on how the dataset is generated. In the below structure, shape_1 and shape_2 refer to two different "runs", generated with different random velocity seeds, 
-
-    water
-        - shape_1
-            - armadillo
-                - state
-                    - 0000.pt   #System state at t0
-                    - 0001.pt   #System state at t1
-                    ...
-                - pv
-            - blub
-            - bunny
-            - spot
-        - shape_2
-
-    
-
-All the config paths provided are for reference and need to be updated before they can be used. 
-
-#### Train a time-stepper model from the config:
-
-    python run.py --train_config train_configs_nclaw_Water
-
-#### Train a time-stepper model with args:
-
-    python run.py --batch_size 2 --epoch 100 --lr 0.0001 --noise 0.0003 --eval_interval 1500 --rollout_interval 1500 --sampling true --sampling_strategy fps --graph_type radius --connectivity_radius 0.032 --model giorom2d_large --dataset WaterDrop2D --load_checkpoint true --ckpt_name giorom2d_large_WaterDrop2D --dataset_rootdir giorom_datasets/
-
-#### Evaluate a time-stepper model (Untested code):
-
-    python eval.py --eval_config train_configs_Water2D
-
-We have not provided the code to save the rollout output as a pytorch tensor. However, this snippet can be found at ```eval_3d.ipynb```
-To render the results with Polyscope or Blender Use the following. This part of the code needs to be modified and appropriate paths need to be provided in the code
-
-    cd Viz
-    python createObj.py
-    python blender_rendering.py
+@article{viswanath2024reduced,
+  title={Reduced-Order Neural Operators: Learning Lagrangian Dynamics on Highly Sparse Graphs},
+  author={Viswanath, Hrishikesh and Chang, Yue and Berner, Julius and Chen, Peter Yichen and Bera, Aniket},
+  journal={arXiv preprint arXiv:2407.03925},
+  year={2024}
+}
