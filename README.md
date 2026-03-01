@@ -17,13 +17,6 @@
 <img src="Res/giorom.png" width="850px" alt="GIOROM Pipeline"/>
 <br><br>
 
-<p align="center">
-  <img src="Res/neuraloperator.gif" width="30%" />
-  <img src="Res/neuralfield.gif" width="30%" />
-  <img src="Res/rendered.gif" width="30%" /> <br>
-  <em>Neural Operator Inference &emsp;&emsp;&emsp; Discretization Agnostic FOM &emsp;&emsp;&emsp; Final Rendering</em>
-</p>
-
 <div id="toc">
   <ul align="center" style="list-style: none;">
     <summary>
