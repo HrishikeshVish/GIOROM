@@ -16,7 +16,7 @@
 <div id="toc">
   <ul align="center" style="list-style: none;">
     <summary>
-      <h2><a href="../README.md">Back to Main</a> &emsp; <a href="https://hrishikeshvish.github.io/projects/giorom.html">Project Page</a> &emsp; <a href="https://drive.google.com/drive/folders/1CWMdqKaCtLy8KhA-DIBpS07M6CSuMjgQ?usp=sharing">Online Phase Data & Weights</a></h2>
+      <h2><a href="../README.md">Back to Main</a> &emsp; <a href="https://hrishikeshvish.github.io/projects/giorom.html">Project Page</a> &emsp; <a href="https://drive.google.com/drive/folders/1xSl0mshZKmz4wvLk1eoFLhaE7EQKZBr_?usp=drive_link">Online Phase Data & Weights</a></h2>
     </summary>
   </ul>
 </div>
