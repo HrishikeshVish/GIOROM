@@ -146,7 +146,7 @@ chmod +x run_ablations.sh
 #### Citation
 If you find this codebase or benchmark suite useful in your research, please consider citing our paper:
 
-Code snippet
+```Code snippet
 
 @article{viswanath2024reduced,
   title={Reduced-Order Neural Operators: Learning Lagrangian Dynamics on Highly Sparse Graphs},
@@ -154,3 +154,4 @@ Code snippet
   journal={arXiv preprint arXiv:2407.03925},
   year={2024}
 }
+```
