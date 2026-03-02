@@ -53,7 +53,7 @@ To ensure modularity and clean benchmarking, this repository is divided into two
 Contains the JAX-based GIOROM architecture alongside PyTorch implementations of all baseline ROMs. It includes a unified evaluation engine that guarantees fair, apples-to-apples comparisons across all models regarding inference time, memory footprint, and reconstruction accuracy. See the [`online_phase/README.md`](./online/README.md) for full execution details.
 
 ### 2. `offline/` (Neural time-stepper & neural operator Baselines)
-Contains the code for processing raw simulation data (GNS / NCLAW) and training the offline full-order and time-stepper models. While we provide our specific offline training code for reproducibility, **GIOROM is strictly agnostic to the offline model**. Any suitable high-fidelity physics simulator can be used to generate the prior trajectories. See the [`offline_phase/README.md`](./offline/README.md) for details.
+Contains the code for processing raw simulation data (GNS / NCLAW) and training the offline full-order and time-stepper models. While we provide our specific offline training code for reproducibility, **The online phase is strictly independent to the offline model**. Any suitable high-fidelity neural operator based physics simulator can be used to generate the prior trajectories. See the [`offline_phase/README.md`](./offline/README.md) for details.
 
 # Quick Start
 
