@@ -163,10 +163,14 @@ If you find this codebase or benchmark suite useful in your research, please con
 
 ```Code snippet
 
-@article{viswanath2024reduced,
-  title={Reduced-Order Neural Operators: Learning Lagrangian Dynamics on Highly Sparse Graphs},
-  author={Viswanath, Hrishikesh and Chang, Yue and Berner, Julius and Chen, Peter Yichen and Bera, Aniket},
-  journal={arXiv preprint arXiv:2407.03925},
-  year={2024}
+@article{
+viswanath2026learning,
+title={Learning Lagrangian Interaction Dynamics with Sampling-Based Model Order Reduction},
+author={Hrishikesh Viswanath and Yue Chang and Aleksey Panas and Julius Berner and Peter Yichen Chen and Aniket Bera},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2026},
+url={https://openreview.net/forum?id=vXCQA1EzaG},
+note={Expert Certification}
 }
 ```
